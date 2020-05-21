@@ -1,0 +1,14 @@
+<div>
+    {{mainTesterCard.question}}
+</div>
+<mat-form-field>
+    <mat-label>Answer</mat-label>
+    <input [formControl]="formControl" matInput (keydown.enter)="onNext()">
+</mat-form-field>
+<button mat-raised-button *ngIf="buttonState != 'beginning'" (click)="pageTurn.emit(-1)" [disabled]="formControl.disabled">Back</button>
+<button mat-raised-button (click)="onNext()" [disabled]="formControl.disabled">{{buttonState != 'end' ? 'Next' : 'Submit'}}</button>
+<div *ngIf="!!options.showAnswersImmediately && formControl.disabled">
+    The answer was <p class="correct inline">{{mainTesterCard.answer}}</p>
+</div>
+<img *ngIf="isAnswerRight === 'yes'" src="./../../../../assets/checkmark.png">
+<img *ngIf="isAnswerRight === 'no'" src="./../../../../assets/xmark.png">

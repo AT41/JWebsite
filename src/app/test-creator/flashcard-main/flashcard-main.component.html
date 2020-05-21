@@ -1,0 +1,16 @@
+<mat-button-toggle-group #supersetToggle>
+    <mat-button-toggle *ngFor="let superset of supersets$ | async" (click)="currentSuperset = superset">
+        {{superset.SupersetName}}
+    </mat-button-toggle>
+</mat-button-toggle-group>
+<app-superset *ngIf="currentSuperset" [superset]="currentSuperset"></app-superset>
+
+<mat-button-toggle-group [multiple]="true">
+    <mat-button-toggle *ngFor="let set of sets$ | async" (click)="selectSet(set)">
+        {{set.SetName}}
+    </mat-button-toggle>
+</mat-button-toggle-group>
+
+<div class="controls" *ngIf="selectedSets.length > 0">
+    <button mat-raised-button color="primary" (click)="startTest()">Start Test</button>
+</div>

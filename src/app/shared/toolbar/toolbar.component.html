@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <mat-toolbar-row>
+    <a href="./flashcards">
+      <button mat-raised-button>Flashcards</button>
+    </a>
+    <a href="./flashcard-creator">
+      <button 
+      [disabled]="!(isAuthorized$ | async)" 
+      mat-raised-button
+    >Create Cards</button>
+    </a>
+    <button 
+      *ngIf="!(isAuthorized$ | async)" 
+      mat-raised-button
+      (click)="createLoginDialog()"
+    >Login</button>
+  </mat-toolbar-row>
+</mat-toolbar>

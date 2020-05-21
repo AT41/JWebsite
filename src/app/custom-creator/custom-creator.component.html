@@ -1,0 +1,17 @@
+<mat-button-toggle-group #supersetToggle>
+    <mat-button-toggle *ngFor="let superset of supersets$ | async" (click)="currentSuperset.next(superset)">
+        {{superset.SupersetName}}
+    </mat-button-toggle>
+    <mat-button-toggle>
+        Custom
+    </mat-button-toggle>
+</mat-button-toggle-group>
+<br>
+<mat-button-toggle-group #setToggle>
+    <mat-button-toggle *ngFor="let set of sets$ | async" (click)="currentSet.next(set)">
+        {{set.SetName}}
+    </mat-button-toggle>
+    <mat-button-toggle>
+        Custom
+    </mat-button-toggle>
+</mat-button-toggle-group>

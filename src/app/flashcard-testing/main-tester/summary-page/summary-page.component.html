@@ -1,0 +1,26 @@
+<div>
+    You scored: {{score}} out of {{mainTesterCards.length}}
+</div>
+
+<mat-button-toggle-group>
+    <mat-button-toggle 
+        *ngFor="let mainTesterCard of mainTesterCards; index as index" 
+        [checked]="index === currentQuestionIndex" 
+        (click)="currentQuestionIndex = index"
+        [class.correct]="userAnswers[index] === mainTesterCard.answer"
+        [class.incorrect]="userAnswers[index] !== mainTesterCard.answer"
+    >
+        {{mainTesterCard.question}}
+    </mat-button-toggle>
+</mat-button-toggle-group>
+<div *ngIf="currentQuestionIndex != -1">
+    <p>
+        Question: {{mainTesterCards[currentQuestionIndex].question}}
+    </p>
+    <p>
+        Answer: {{mainTesterCards[currentQuestionIndex].answer}}
+    </p>
+    <p>
+        You answered: {{userAnswers[currentQuestionIndex]}}
+    </p>
+</div>
