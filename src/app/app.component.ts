@@ -7,9 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'japanesePractice';
-  constructor() {
-  }
+  constructor() {}
 }
-
-
-
