@@ -1,11 +1,11 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <a mat-button href="/">
+    <a mat-button routerLink="/">
       <b>{{ title }}</b>
     </a>
     <span class="flex-end">
-      <a mat-button href="./flashcards">Flashcards</a>
-      <a mat-button [disabled]="!(isAuthorized$ | async)" href="./flashcard-creator">
+      <a mat-button routerLink="./flashcards">Flashcards</a>
+      <a mat-button [disabled]="!(isAuthorized$ | async)" routerLink="./flashcard-creator">
         Create Cards
       </a>
       <button mat-button *ngIf="!(isAuthorized$ | async)" (click)="createRegisterDialog()">

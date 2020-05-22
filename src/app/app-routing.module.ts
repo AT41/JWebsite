@@ -6,14 +6,14 @@ import { MainTesterComponent } from './flashcard-testing/main-tester/main-tester
 import { CustomCreatorComponent } from './custom-creator/custom-creator.component';
 
 const routes: Routes = [
-  {path: 'flashcards', component: FlashcardMainComponent},
-  {path: 'test', component: MainTesterComponent},
-  {path: 'flashcard-creator', component: CustomCreatorComponent},
-  {path: '**', component: HomepageComponent}
+  { path: 'flashcards', component: FlashcardMainComponent },
+  { path: 'test', component: MainTesterComponent },
+  { path: 'flashcard-creator', component: CustomCreatorComponent },
+  { path: '**', component: HomepageComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
