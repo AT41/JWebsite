@@ -11,13 +11,10 @@ import { ToolbarModule } from './shared/toolbar/toolbar.module';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { FlashcardsModule } from './test-creator/flashcards.module';
 import { FlashcardTestingModule } from './flashcard-testing/flashcard-testing.module';
-import {CustomCreatorModule} from './custom-creator/custom-creator.module'
+import { CustomCreatorModule } from './custom-creator/custom-creator.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomepageComponent
-  ],
+  declarations: [AppComponent, HomepageComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -32,4 +29,4 @@ import {CustomCreatorModule} from './custom-creator/custom-creator.module'
   providers: [],
   bootstrap: [AppComponent, ToolbarComponent]
 })
-export class AppModule { }
+export class AppModule {}
