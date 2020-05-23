@@ -3,7 +3,8 @@
     <a mat-button routerLink="/">
       <b>{{ title }}</b>
     </a>
-    <span class="flex-end">
+    <span class="flex-spacer"></span>
+    <span class="nav-links-lg">
       <a mat-button routerLink="./flashcards">Flashcards</a>
       <a mat-button [disabled]="!(isAuthorized$ | async)" routerLink="./flashcard-creator">
         Create Cards
@@ -14,6 +15,23 @@
       <button mat-button *ngIf="!(isAuthorized$ | async)" (click)="createLoginDialog()">
         Login
       </button>
+    </span>
+    <span class="nav-links-sm">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item routerLink="./flashcards">Flashcards</a>
+        <a mat-menu-item [disabled]="!(isAuthorized$ | async)" routerLink="./flashcard-creator">
+          Create Cards
+        </a>
+        <button mat-menu-item *ngIf="!(isAuthorized$ | async)" (click)="createRegisterDialog()">
+          Register
+        </button>
+        <button mat-menu-item *ngIf="!(isAuthorized$ | async)" (click)="createLoginDialog()">
+          Login
+        </button>
+      </mat-menu>
     </span>
   </mat-toolbar-row>
 </mat-toolbar>
