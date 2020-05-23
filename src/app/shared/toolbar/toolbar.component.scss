@@ -1,9 +1,23 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 .flex-spacer {
   flex-grow: 1;
 }
 
 @media (max-width: 720px) {
   .nav-links-lg {
+    display: none;
+  }
+  .nav-links-sm {
+    display: flex;
+  }
+}
+
+@media (min-width: 720px) {
+  .nav-links-lg {
+    display: flex;
+  }
+  .nav-links-sm {
     display: none;
   }
 }
