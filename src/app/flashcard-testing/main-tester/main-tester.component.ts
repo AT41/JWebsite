@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MainTesterCard, TestStarterService } from '../test-starter.service';
 
-
 @Component({
   selector: 'app-main-tester',
   templateUrl: './main-tester.component.html',
@@ -14,10 +13,10 @@ export class MainTesterComponent implements OnInit {
   public userAnswers: string[];
   public currentQuestionIndex = 0;
   public disableNavigation = false;
-  constructor(private testStarterService: TestStarterService) { }
+  constructor(private testStarterService: TestStarterService) {}
 
   ngOnInit() {
-    this.mainTesterCards = this.testStarterService.mainTesterCards;
+    this.mainTesterCards = this.testStarterService.mainTesterCards || []; // Defaults to []
     this.locked = this.mainTesterCards.map(() => false);
     this.userAnswers = this.mainTesterCards.map(() => '');
   }
