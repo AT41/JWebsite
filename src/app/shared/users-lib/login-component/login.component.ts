@@ -37,13 +37,9 @@ export class LoginComponent implements OnInit {
   }
 
   public static createDialog(matDialogService: MatDialog): MatDialogRef<LoginComponent> {
-    if (!!this.currentDialog) {
-      console.warn('There\'s already a login dialog open. The current dialog will be overwritten.');
-    }
     this.currentDialog = matDialogService.open(LoginComponent, {
       data: matDialogService
     });
-
     return this.currentDialog;
   }
 }

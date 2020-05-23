@@ -1,0 +1,14 @@
+<mat-card class="w-50">
+  <span class="header">Question 1</span>
+  <hr />
+  <mat-card-content class="text-center">
+    <h1>{{ question }}</h1>
+    <div class="option">
+      <button mat-raised-button color="accent">{{ options[0] }}</button>
+      <button mat-raised-button color="accent">{{ options[1] }}</button>
+      <button mat-raised-button color="accent">{{ options[2] }}</button>
+      <button mat-raised-button color="primary">{{ options[3] }}</button>
+    </div>
+    <button mat-raised-button class="btn-confirm">Confirm</button>
+  </mat-card-content>
+</mat-card>
