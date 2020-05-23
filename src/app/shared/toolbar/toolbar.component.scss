@@ -1,5 +1,9 @@
-.flex-end {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
+.flex-spacer {
+  flex-grow: 1;
+}
+
+@media (max-width: 720px) {
+  .nav-links-lg {
+    display: none;
+  }
 }
