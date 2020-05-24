@@ -7,6 +7,7 @@
 
 # authentication for backend
 config.js
+sql-ts-config.json
 
 # dependencies
 /node_modules

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Set, CardType, KanjiCard, Card } from '../shared/services/backend-models';
+import { Set, KanjiCard, Card } from '../../backend/backend-models';
 import { CardService } from '../shared/services/cardService/card.service';
 import { forkJoin, iif, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,31 +26,42 @@ export class TestStarterService {
   public get mainTesterCards(): MainTesterCard[] {
     return this._mainTesterCards;
   }
-  constructor(private cardService: CardService, private router: Router) { }
+  constructor(private cardService: CardService, private router: Router) {}
 
   public startTest(sets: Set[], questionPrompt?: string): Observable<void> {
-    return forkJoin(sets.map(
-      set => sets.every(set1 => set1.CardType === CardType.kanji) ? 
-        this.getKanjiCards(set)
-        : this.getCards(set)
-      )).pipe(map((testerCards: MainTesterCard[][]) => {
+    return forkJoin(
+      sets.map((set) =>
+        sets.every((set1) => set1.CardType === 'kanji')
+          ? this.getKanjiCards(set)
+          : this.getCards(set)
+      )
+    ).pipe(
+      map((testerCards: MainTesterCard[][]) => {
         this._mainTesterCards = shuffle(flatten(testerCards));
         this.router.navigate(['test']);
-      }
-    ));
+      })
+    );
   }
 
   private getKanjiCards(set: Set): Observable<MainTesterCard[]> {
-    return this.cardService.getKanjiCards$(set.Id)
-      .pipe(map((kanjiCards: KanjiCard[]) => 
-        kanjiCards.map(kanjiCard => new MainTesterCard(kanjiCard.Kanji, kanjiCard.English, kanjiCard.Id))
-    ));
+    return this.cardService
+      .getKanjiCards$(set.Id)
+      .pipe(
+        map((kanjiCards: KanjiCard[]) =>
+          kanjiCards.map(
+            (kanjiCard) => new MainTesterCard(kanjiCard.Kanji, kanjiCard.English, kanjiCard.Id)
+          )
+        )
+      );
   }
 
   private getCards(set: Set): Observable<MainTesterCard[]> {
-    return this.cardService.getCards$(set.Id)
-      .pipe(map((cards: Card[]) => 
-        cards.map(card => new MainTesterCard(card.Kanji, card.Answer, card.Id))
-    ));
+    return this.cardService
+      .getCards$(set.Id)
+      .pipe(
+        map((cards: Card[]) =>
+          cards.map((card) => new MainTesterCard(card.Kanji, card.Answer, card.Id))
+        )
+      );
   }
 }

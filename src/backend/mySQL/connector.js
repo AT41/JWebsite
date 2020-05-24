@@ -11,24 +11,23 @@ var pool = {};
 
 // Function that takes in a query string and a res
 pool.my_db_query = function(myQuery) {
-    return rxjs.Observable.create(function(observer) {
-        var pool = flashcardsPool;
+  return rxjs.Observable.create(function(observer) {
+    var pool = flashcardsPool;
 
-        pool.getConnection(function (err, connection) {
-            connection.query(myQuery, function (error, results, fields) {
-                // TODO Error checking
-                observer.next(results);
-                observer.complete();
-                connection.release();
-            });
-        });
+    pool.getConnection(function(err, connection) {
+      connection.query(myQuery, function(error, results, fields) {
+        // TODO Error checking
+        observer.next(results);
+        observer.complete();
+        connection.release();
+      });
     });
-    
-}
+  });
+};
 pool.disconnect = function() {
-    if (type === connectorType.FLASHCARDS) {
-        flashcardsPool.end();
-    }
-}
+  if (type === connectorType.FLASHCARDS) {
+    flashcardsPool.end();
+  }
+};
 
 module.exports = pool;

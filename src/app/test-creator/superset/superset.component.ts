@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Superset } from 'src/app/shared/services/backend-models';
+import { Superset } from '../../../backend/backend-models';
 
 @Component({
   selector: 'app-superset',
@@ -8,9 +8,7 @@ import { Superset } from 'src/app/shared/services/backend-models';
 })
 export class SupersetComponent implements OnInit {
   @Input() superset: Superset;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -1,6 +1,7 @@
 # JapanesePractice
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.2.
+In order to run the backend, you'll need to install mysql + mysql server and contact AT41 for the schemas, config.js, and sql-ts-config.json
 
 ## Development server
 
@@ -25,8 +26,6 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-
 
 ====================================================
 

@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { SupersetService } from '../../shared/services/supersetService/superset.service';
 import { Observable } from 'rxjs';
-import { SetService} from '../../shared/services/setService/set.service';
-import { Superset, Set } from '../../shared/services/backend-models';
+import { SetService } from '../../shared/services/setService/set.service';
+import { Superset, Set } from '../../../backend/backend-models';
 import remove from 'lodash-es/remove';
 import { TestStarterService } from 'src/app/flashcard-testing/test-starter.service';
 import { Router } from '@angular/router';
@@ -28,21 +28,21 @@ export class FlashcardMainComponent implements OnInit {
   public selectedSets: Set[] = [];
 
   constructor(
-    private supersetService: SupersetService, 
-    private setService: SetService, 
-    private testStarter: TestStarterService, 
+    private supersetService: SupersetService,
+    private setService: SetService,
+    private testStarter: TestStarterService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.supersets$ = this.supersetService.getSupersets$();
   }
 
   selectSet(set: Set) {
-    if (this.selectedSets.findIndex(selSet => selSet.Id === set.Id) === -1) {
+    if (this.selectedSets.findIndex((selSet) => selSet.Id === set.Id) === -1) {
       this.selectedSets.push(set);
     } else {
-      remove(this.selectedSets, selSet => selSet.Id === set.Id); 
+      remove(this.selectedSets, (selSet) => selSet.Id === set.Id);
     }
   }
 
