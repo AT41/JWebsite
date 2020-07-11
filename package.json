@@ -31,6 +31,7 @@
     "@angular/router": "~8.2.14",
     "@at41/login-module": "^1.1.1",
     "@at41/login-module-types": "^1.0.0",
+    "@ng-select/ng-select": "^4.0.4",
     "cookie-parser": "~1.4.4",
     "core-js": "^2.6.11",
     "cors": "^2.8.5",

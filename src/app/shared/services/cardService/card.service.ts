@@ -16,10 +16,21 @@ export class CardService {
     private userAuthService: UserAuthenticationService
   ) {}
 
+  public searchCards$(cardDetails: Partial<Card>): Observable<Card[]> {
+    const user = this.userAuthService.getLoggedInUser();
+    return this.backendService.httpRequest(
+      `${this.urlCards}/?${Object.keys(cardDetails).reduce(
+        (prev, curr) => prev + curr + '=' + cardDetails[curr] + '&',
+        ''
+      )}'
+      username=${user.username}&session_token=${user.sessionToken}`
+    );
+  }
+
   public getCards$(setId: number): Observable<Card[]> {
     const user = this.userAuthService.getLoggedInUser();
     return this.backendService.httpRequest(
-      `${this.urlCards}/?setId=${setId}&username=${user.username}&session_token=${user.sessionToken}`
+      `${this.urlCards}/?SetId=${setId}&username=${user.username}&session_token=${user.sessionToken}`
     );
   }
 

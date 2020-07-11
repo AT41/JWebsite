@@ -5,19 +5,11 @@ import { MainTesterComponent } from './main-tester/main-tester.component';
 import { QuestionBoxComponent } from './main-tester/question-box/question-box.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SummaryPageComponent } from './main-tester/summary-page/summary-page.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    MainTesterComponent,
-    QuestionBoxComponent,
-    SummaryPageComponent
-  ],
-  imports: [
-    CommonModule,
-    AngularMatsModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-  ]
+  declarations: [MainTesterComponent, QuestionBoxComponent, SummaryPageComponent],
+  imports: [CommonModule, AngularMatsModule, ReactiveFormsModule, FormsModule],
+  exports: []
 })
-export class FlashcardTestingModule { }
+export class FlashcardTestingModule {}
