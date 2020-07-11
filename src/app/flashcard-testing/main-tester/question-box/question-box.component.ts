@@ -41,7 +41,7 @@ export class QuestionBoxComponent {
   @Output() pageTurn = new EventEmitter<1 | -1>();
   @Output() isDisabling = new EventEmitter<boolean>();
   public formControl: FormControl;
-  protected possibleAnswers: Observable<string[]>;
+  public possibleAnswers: Observable<string[]>;
 
   public get isAnswerRight(): 'yes' | 'no' | null {
     if (!this.formControl.disabled) {

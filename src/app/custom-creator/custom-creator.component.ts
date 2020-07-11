@@ -12,13 +12,11 @@ import { Superset, Set } from 'src/backend/backend-models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomCreatorComponent implements OnInit {
-  protected supersets$: Observable<Superset[]>;
-  protected sets$: Observable<Set[]>;
+  public supersets$: Observable<Superset[]>;
+  public sets$: Observable<Set[]>;
 
-  protected readonly currentSuperset: BehaviorSubject<Superset> = new BehaviorSubject<Superset>(
-    null
-  );
-  protected readonly currentSet: BehaviorSubject<Set> = new BehaviorSubject<Set>(null);
+  public readonly currentSuperset: BehaviorSubject<Superset> = new BehaviorSubject<Superset>(null);
+  public readonly currentSet: BehaviorSubject<Set> = new BehaviorSubject<Set>(null);
 
   constructor(private supersetService: SupersetService, private setService: SetService) {
     this.reset();
