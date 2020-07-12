@@ -1,13 +1,12 @@
 <div>
   {{ mainTesterCard.question }}
 </div>
-<!--
+
 <mat-form-field>
-    <mat-label>Answer</mat-label>
-    <input [formControl]="formControl" matInput (keydown.enter)="onNext()">
+  <mat-label>Answer</mat-label>
+  <input [formControl]="formControl" matInput (keydown.enter)="onNext()" />
 </mat-form-field>
--->
-<ng-select [items]="possibleAnswers | async" [formControl]="formControl"> </ng-select>
+
 <button
   mat-raised-button
   *ngIf="buttonState != 'beginning'"
