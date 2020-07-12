@@ -10,11 +10,12 @@ db_cards.getCards = function getCards(cardObject, username) {
       (prev, curr) =>
         prev +
         (isNaN(cardObject[curr])
-          ? 'INSTR(' + curr + `, "${cardObject[curr]}") > 0 AND `
+          ? `INSTR(${curr}, "${cardObject[curr]}") > 0 AND `
           : `${curr}=${cardObject[curr]} AND `),
       ''
     )}
-    (CardOwner="global" OR CardOwner="${username}")`
+    (CardOwner="global" OR CardOwner="${username}")
+    ${cardObject['SetId'] == null ? 'LIMIT 10' : ''}`
   );
 };
 

@@ -22,8 +22,7 @@ export class CardService {
       `${this.urlCards}/?${Object.keys(cardDetails).reduce(
         (prev, curr) => prev + curr + '=' + cardDetails[curr] + '&',
         ''
-      )}'
-      username=${user.username}&session_token=${user.sessionToken}`
+      )}username=${user.username}&session_token=${user.sessionToken}`
     );
   }
 

@@ -14,6 +14,12 @@ router.get('/cards', function(req, res, next) {
   const sessionToken = req.query['session_token'];
   delete req.query['session_token'];
 
+  Object.keys(req.query).forEach((key) => {
+    if (req.query[key] == null || req.query[key] == '') {
+      delete req.query[key];
+    }
+  });
+
   db_cards.getCards(req.query).subscribe((val) => res.json(val));
 });
 

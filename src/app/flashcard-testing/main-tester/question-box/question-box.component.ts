@@ -60,7 +60,7 @@ export class QuestionBoxComponent {
     this.formControl = new FormControl('', Validators.required);
     this.formControl.valueChanges.subscribe((userAnswer) => this.userAnswerChange.emit(userAnswer));
     this.possibleAnswers = this.formControl.valueChanges.pipe(
-      debounceTime(1000),
+      debounceTime(300),
       switchMap((val) => this.generateAnswers(val))
     );
   }
