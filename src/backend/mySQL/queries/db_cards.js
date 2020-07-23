@@ -15,7 +15,7 @@ db_cards.getCards = function getCards(cardObject, username) {
       ''
     )}
     (CardOwner="global" OR CardOwner="${username}")
-    ${cardObject['SetId'] == null ? 'LIMIT 10' : ''}`
+    ${cardObject['SetId'] == null ? 'LIMIT 20' : ''}`
   );
 };
 

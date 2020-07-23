@@ -11,6 +11,9 @@ export class MainTesterCard {
   question: string;
   answer: string;
   cardId: number;
+
+  public static cardObjectAnswerAttributeName: keyof KanjiCard | keyof Card;
+
   constructor(question: string, answer: string, cardId: number) {
     this.question = question;
     this.answer = answer; // TODO ANTHONY Consider getting these returned as hashed values from the backend
@@ -28,12 +31,34 @@ export class TestStarterService {
   }
   constructor(private cardService: CardService, private router: Router) {}
 
-  public startTest(sets: Set[], questionPrompt?: string): Observable<void> {
+  public startTest(
+    sets: Set[],
+    questionAttributeName?: keyof KanjiCard | keyof Card,
+    answerAttributeName?: keyof KanjiCard | keyof Card,
+    questionPrompt?: string
+  ): Observable<void> {
+    if (sets[0].CardType === 'kanji') {
+      questionAttributeName = questionAttributeName || 'Kanji';
+      answerAttributeName = answerAttributeName || 'English';
+      MainTesterCard.cardObjectAnswerAttributeName = answerAttributeName;
+    } else {
+      questionAttributeName = questionAttributeName || 'Kanji';
+      answerAttributeName = answerAttributeName || 'Answer';
+      MainTesterCard.cardObjectAnswerAttributeName = answerAttributeName;
+    }
     return forkJoin(
       sets.map((set) =>
         sets.every((set1) => set1.CardType === 'kanji')
-          ? this.getKanjiCards(set)
-          : this.getCards(set)
+          ? this.getKanjiCards(
+              set,
+              questionAttributeName as keyof KanjiCard,
+              answerAttributeName as keyof KanjiCard
+            )
+          : this.getCards(
+              set,
+              questionAttributeName as keyof Card,
+              answerAttributeName as keyof Card
+            )
       )
     ).pipe(
       map((testerCards: MainTesterCard[][]) => {
@@ -43,24 +68,44 @@ export class TestStarterService {
     );
   }
 
-  private getKanjiCards(set: Set): Observable<MainTesterCard[]> {
+  private getKanjiCards(
+    set: Set,
+    questionAttributeName: keyof KanjiCard,
+    answerAttributeName: keyof KanjiCard
+  ): Observable<MainTesterCard[]> {
     return this.cardService
       .getKanjiCards$(set.Id)
       .pipe(
         map((kanjiCards: KanjiCard[]) =>
           kanjiCards.map(
-            (kanjiCard) => new MainTesterCard(kanjiCard.Kanji, kanjiCard.English, kanjiCard.Id)
+            (kanjiCard) =>
+              new MainTesterCard(
+                kanjiCard[questionAttributeName as any],
+                kanjiCard[answerAttributeName as any],
+                kanjiCard.Id
+              )
           )
         )
       );
   }
 
-  private getCards(set: Set): Observable<MainTesterCard[]> {
+  private getCards(
+    set: Set,
+    questionAttributeName: keyof Card,
+    answerAttributeName: keyof Card
+  ): Observable<MainTesterCard[]> {
     return this.cardService
       .getCards$(set.Id)
       .pipe(
         map((cards: Card[]) =>
-          cards.map((card) => new MainTesterCard(card.Kanji, card.Answer, card.Id))
+          cards.map(
+            (card) =>
+              new MainTesterCard(
+                card[questionAttributeName as any],
+                card[answerAttributeName as any],
+                card.Id
+              )
+          )
         )
       );
   }

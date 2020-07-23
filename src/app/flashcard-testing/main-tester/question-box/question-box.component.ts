@@ -5,11 +5,14 @@ import { MainTesterCard } from '../../test-starter.service';
 import { CardService } from 'src/app/shared/services/cardService/card.service';
 import { map, switchMap, debounceTime } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import flatten from 'lodash-es/flatten';
+import { QuestionMarkerService } from '../question-marker.service';
 
 export class QuestionBoxOptions {
   markQuestionsImmediately?: boolean;
   showAnswersImmediately?: boolean;
   questionPrompt?: string;
+  showPossibleAnswers?: boolean;
 }
 
 @Component({
@@ -24,7 +27,8 @@ export class QuestionBoxComponent {
   @Input() buttonState: 'normal' | 'beginning' | 'end' = 'normal';
   @Input() options?: QuestionBoxOptions = {
     markQuestionsImmediately: true,
-    showAnswersImmediately: true
+    showAnswersImmediately: true,
+    showPossibleAnswers: true
   };
   @Input() set locked(lock: boolean) {
     if (lock) {
@@ -47,22 +51,32 @@ export class QuestionBoxComponent {
     if (!this.formControl.disabled) {
       return null;
     }
-    if (this.formControl.value === this.mainTesterCard.answer) {
-      return 'yes';
-    } else {
-      return 'no';
-    }
+    return this.questionMarkerService.isGuessCorrect(
+      this.formControl.value,
+      this.mainTesterCard.answer
+    )
+      ? 'yes'
+      : 'no';
   }
 
   private waitAfterSubmit = 1000;
 
-  constructor(private statService: StatService, private cardService: CardService) {
+  constructor(
+    private statService: StatService,
+    private cardService: CardService,
+    private questionMarkerService: QuestionMarkerService
+  ) {
     this.formControl = new FormControl('', Validators.required);
     this.formControl.valueChanges.subscribe((userAnswer) => this.userAnswerChange.emit(userAnswer));
-    this.possibleAnswers = this.formControl.valueChanges.pipe(
-      debounceTime(300),
-      switchMap((val) => this.generateAnswers(val))
-    );
+  }
+
+  ngAfterViewInit() {
+    if (this.options.showPossibleAnswers) {
+      this.possibleAnswers = this.formControl.valueChanges.pipe(
+        debounceTime(300),
+        switchMap((val) => this.generateAnswers(val))
+      );
+    }
   }
 
   onNext() {
@@ -77,10 +91,7 @@ export class QuestionBoxComponent {
     this.lockedChange.emit(true);
     this.isDisabling.emit(true);
     this.statService
-      .incrementStats(
-        this.mainTesterCard.answer === this.formControl.value,
-        this.mainTesterCard.cardId
-      )
+      .incrementStats(this.isAnswerRight === 'yes', this.mainTesterCard.cardId)
       .subscribe();
     setTimeout(() => {
       this.isDisabling.emit(false);
@@ -89,8 +100,27 @@ export class QuestionBoxComponent {
   }
 
   private generateAnswers(guess: string): Observable<string[]> {
-    return this.cardService
-      .searchCards$({ Answer: guess })
-      .pipe(map((cards) => cards.map((card) => card.Answer)));
+    const cardSearch = {} as any;
+    guess = guess.toLowerCase();
+    cardSearch[MainTesterCard.cardObjectAnswerAttributeName] = guess;
+    return this.cardService.searchCards$(cardSearch).pipe(
+      map(
+        (cards) =>
+          Array.from(
+            new Set(
+              flatten(
+                cards.map((card) => {
+                  const equivalentAnswers = (card[
+                    MainTesterCard.cardObjectAnswerAttributeName
+                  ] as string).split(/[;|]/);
+                  return equivalentAnswers
+                    .map((ans) => ans.toLowerCase().trim())
+                    .filter((ans) => ans.indexOf(guess) !== -1);
+                })
+              ).sort((a, b) => a.indexOf(guess) - b.indexOf(guess))
+            )
+          ).slice(0, 10) as string[]
+      )
+    );
   }
 }

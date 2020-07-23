@@ -1,32 +1,43 @@
-
 <div class="flex-left" *ngIf="mainTesterCards && mainTesterCards.length > currentQuestionIndex">
-    <div class="questions-container">
-        <mat-button-toggle-group>
-            <mat-button-toggle 
-                *ngFor="let testerCard of mainTesterCards; index as index" 
-                [checked]="index === currentQuestionIndex" 
-                (click)="currentQuestionIndex = index"
-                [disabled]="disableNavigation"
-                [class.correct]="locked[index] && userAnswers[index] == testerCard.answer"
-                [class.incorrect]="locked[index] && userAnswers[index] != testerCard.answer"
-            >
-                {{testerCard.question}}
-            </mat-button-toggle>
-        </mat-button-toggle-group>
-    </div>
-    <app-question-box
-        [mainTesterCard]="mainTesterCards[currentQuestionIndex]"
-        [buttonState]="currentQuestionIndex === 0 ? 'beginning' : (currentQuestionIndex === mainTesterCards.length - 1 ? 'end' : 'normal')"
-        [(locked)]="locked[currentQuestionIndex]"
-        [(userAnswer)]="userAnswers[currentQuestionIndex]"
-        (pageTurn)="currentQuestionIndex = currentQuestionIndex + $event"
-        (isDisabling)="disableNavigation = $event"
-    ></app-question-box>
-    <img>
+  <div class="questions-container">
+    <mat-button-toggle-group>
+      <mat-button-toggle
+        *ngFor="let testerCard of mainTesterCards; index as index"
+        [checked]="index === currentQuestionIndex"
+        (click)="currentQuestionIndex = index"
+        [disabled]="disableNavigation"
+        [class.correct]="
+          locked[index] &&
+          questionMarkerService.isGuessCorrect(userAnswers[index], testerCard.answer)
+        "
+        [class.incorrect]="
+          locked[index] &&
+          !questionMarkerService.isGuessCorrect(userAnswers[index], testerCard.answer)
+        "
+      >
+        {{ testerCard.question }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <app-question-box
+    [mainTesterCard]="mainTesterCards[currentQuestionIndex]"
+    [buttonState]="
+      currentQuestionIndex === 0
+        ? 'beginning'
+        : currentQuestionIndex === mainTesterCards.length - 1
+        ? 'end'
+        : 'normal'
+    "
+    [(locked)]="locked[currentQuestionIndex]"
+    [(userAnswer)]="userAnswers[currentQuestionIndex]"
+    (pageTurn)="currentQuestionIndex = currentQuestionIndex + $event"
+    (isDisabling)="disableNavigation = $event"
+  ></app-question-box>
+  <img />
 </div>
-<app-summary-page 
-    *ngIf="mainTesterCards.length == currentQuestionIndex"
-    [mainTesterCards]="mainTesterCards"
-    [userAnswers]="userAnswers">
-
+<app-summary-page
+  *ngIf="mainTesterCards.length == currentQuestionIndex"
+  [mainTesterCards]="mainTesterCards"
+  [userAnswers]="userAnswers"
+>
 </app-summary-page>
