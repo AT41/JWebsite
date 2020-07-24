@@ -6,9 +6,15 @@ import { QuestionBoxComponent } from './main-tester/question-box/question-box.co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SummaryPageComponent } from './main-tester/summary-page/summary-page.component';
 import { QuestionMarkerService } from './main-tester/question-marker.service';
+import { DropdownTabDirective } from './main-tester/question-box/dropdown-tab.directive';
 
 @NgModule({
-  declarations: [MainTesterComponent, QuestionBoxComponent, SummaryPageComponent],
+  declarations: [
+    MainTesterComponent,
+    QuestionBoxComponent,
+    SummaryPageComponent,
+    DropdownTabDirective
+  ],
   providers: [QuestionMarkerService],
   imports: [CommonModule, AngularMatsModule, ReactiveFormsModule],
   exports: []

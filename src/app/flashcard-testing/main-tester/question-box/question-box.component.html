@@ -4,8 +4,15 @@
 
 <mat-form-field>
   <mat-label>Answer</mat-label>
-  <input [formControl]="formControl" matInput (keydown.enter)="onNext()" [matAutocomplete]="auto" />
-  <mat-autocomplete #auto="matAutocomplete">
+  <input
+    appDropdownTab
+    [dropDownDirectiveFormControl]="formControl"
+    [formControl]="formControl"
+    matInput
+    (keydown.enter)="onNext()"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption="true">
     <mat-option *ngFor="let possibleAnswer of possibleAnswers | async" [value]="possibleAnswer">
       {{ possibleAnswer }}
     </mat-option>
