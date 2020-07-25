@@ -1,4 +1,10 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { MainTesterCard, TestStarterService } from '../test-starter.service';
 import { QuestionMarkerService } from './question-marker.service';
 
@@ -12,10 +18,19 @@ export class MainTesterComponent implements OnInit {
   public mainTesterCards: MainTesterCard[];
   public locked: boolean[];
   public userAnswers: string[];
-  public currentQuestionIndex = 0;
   public disableNavigation = false;
+
+  private _currentQuestionIndex = 0;
+  public get currentQuestionIndex() {
+    return this._currentQuestionIndex;
+  }
+  public set currentQuestionIndex(i: number) {
+    this.currentQuestionIndex = i;
+  }
+
   constructor(
     private testStarterService: TestStarterService,
+    private changeDetectorRef: ChangeDetectorRef,
     public questionMarkerService: QuestionMarkerService
   ) {}
 
