@@ -3,8 +3,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { StatService } from 'src/app/shared/services/statService/stat.service';
 import { MainTesterCard } from '../../test-starter.service';
 import { CardService } from 'src/app/shared/services/cardService/card.service';
-import { map, switchMap, debounceTime } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, switchMap, debounceTime, debounce } from 'rxjs/operators';
+import { Observable, timer, EMPTY, of } from 'rxjs';
 import flatten from 'lodash-es/flatten';
 import { QuestionMarkerService } from '../question-marker.service';
 
@@ -74,8 +74,8 @@ export class QuestionBoxComponent {
   ngAfterViewInit() {
     if (this.options.showPossibleAnswers) {
       this.possibleAnswers = this.formControl.valueChanges.pipe(
-        debounceTime(300),
-        switchMap((val) => this.generateAnswers(val))
+        debounce((val) => (val === '' ? EMPTY : timer(300))),
+        switchMap((val) => (val === '' ? of([]) : this.generateAnswers(val)))
       );
     }
   }

@@ -1,13 +1,5 @@
-import {
-  Directive,
-  HostListener,
-  AfterViewInit,
-  ElementRef,
-  ChangeDetectorRef,
-  Input
-} from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
-import { MatInput } from '@angular/material/input';
 import { FormControl } from '@angular/forms';
 
 /**
