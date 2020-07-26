@@ -32,9 +32,9 @@ export class QuestionBoxComponent {
   };
   @Input() set locked(lock: boolean) {
     if (lock) {
-      this.formControl.disable();
+      this.formControl.disable({ emitEvent: false });
     } else {
-      this.formControl.enable();
+      this.formControl.enable({ emitEvent: false });
     }
   }
   @Output() lockedChange = new EventEmitter<boolean>();
@@ -44,6 +44,7 @@ export class QuestionBoxComponent {
   @Output() userAnswerChange = new EventEmitter<string>();
   @Output() pageTurn = new EventEmitter<1 | -1>();
   @Output() isDisabling = new EventEmitter<boolean>();
+
   public formControl: FormControl;
   public possibleAnswers: Observable<string[]>;
 
