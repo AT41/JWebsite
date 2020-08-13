@@ -4,13 +4,14 @@ import { Stat } from '../../../../backend/backend-models';
 import { BackendService } from '../backend-service/backend.service';
 import { UserAuthenticationService } from '../../users-lib/user-authentication-service/user-authentication.service';
 import { switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatService {
-  private readonly urlGetStats = 'http://localhost:3000/stats/get_stats';
-  private readonly urlIncrementStats = 'http://localhost:3000/stats/increment_stats';
+  private readonly urlGetStats = `${environment.backendUrl}/stats/get_stats`;
+  private readonly urlIncrementStats = `${environment.backendUrl}/stats/increment_stats`;
 
   constructor(
     private backendService: BackendService,

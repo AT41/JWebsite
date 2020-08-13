@@ -3,13 +3,14 @@ import { BackendService } from 'src/app/shared/services/backend-service/backend.
 import { Observable } from 'rxjs';
 import { Card, KanjiCard } from '../../../../backend/backend-models';
 import { UserAuthenticationService } from '../../users-lib/user-authentication-service/user-authentication.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardService {
-  private readonly urlCards = `http://localhost:3000/base_cards/cards`;
-  private readonly urlKanjiCards = `http://localhost:3000/base_cards/kanji_cards`;
+  private readonly urlCards = `${environment.backendUrl}/base_cards/cards`;
+  private readonly urlKanjiCards = `${environment.backendUrl}/base_cards/kanji_cards`;
 
   constructor(
     private backendService: BackendService,

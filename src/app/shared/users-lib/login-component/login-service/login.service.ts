@@ -3,29 +3,32 @@ import { BackendService } from 'src/app/shared/services/backend-service/backend.
 import { Observable, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { UserAuthenticationService } from '../../user-authentication-service/user-authentication.service';
-import {QueryType} from '@at41/login-module-types';
+import { QueryType } from '@at41/login-module-types';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private readonly usersUrl = `http://localhost:3000/users`;
+  private readonly usersUrl = `${environment.backendUrl}/users`;
 
   // TODO need error catching in case server is down
   public tryLogin(username: string, password: string): Observable<string> {
     // There are a lot of different options you can pass, for example { observe: 'response' } which returns HttpResponse rather than JSON Object
     const url = this.createBackendUrl(QueryType.tryLogin, username, password);
-    return this.backendService.httpRequest(url).pipe(tap(nonce => {
-      if (nonce != null) {
-        this.userAuthenticationService.saveLoginSession(username, nonce);
-      }
-    }));
+    return this.backendService.httpRequest(url).pipe(
+      tap((nonce) => {
+        if (nonce != null) {
+          this.userAuthenticationService.saveLoginSession(username, nonce);
+        }
+      })
+    );
   }
 
   public createUser(username: string, password: string): Observable<boolean> {
     const url = this.createBackendUrl(QueryType.createAccount, username, password);
     return this.backendService.httpRequest(url).pipe(
-      catchError(err => {
+      catchError((err) => {
         console.dir(err);
         return of(false);
       }),
@@ -49,5 +52,8 @@ export class LoginService {
     return backendUrl;
   }
 
-  constructor(private backendService: BackendService, private userAuthenticationService: UserAuthenticationService) {}
+  constructor(
+    private backendService: BackendService,
+    private userAuthenticationService: UserAuthenticationService
+  ) {}
 }

@@ -1,4 +1,11 @@
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+  ViewChild
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { StatService } from 'src/app/shared/services/statService/stat.service';
 import { MainTesterCard } from '../../test-starter.service';
@@ -7,6 +14,7 @@ import { map, switchMap, debounceTime, debounce } from 'rxjs/operators';
 import { Observable, timer, EMPTY, of } from 'rxjs';
 import flatten from 'lodash-es/flatten';
 import { QuestionMarkerService } from '../question-marker.service';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 export class QuestionBoxOptions {
   markQuestionsImmediately?: boolean;
@@ -44,6 +52,8 @@ export class QuestionBoxComponent {
   @Output() userAnswerChange = new EventEmitter<string>();
   @Output() pageTurn = new EventEmitter<1 | -1>();
   @Output() isDisabling = new EventEmitter<boolean>();
+
+  @ViewChild(MatAutocompleteTrigger) dropdown: MatAutocompleteTrigger | null;
 
   public formControl: FormControl;
   public possibleAnswers: Observable<string[]>;
@@ -91,6 +101,7 @@ export class QuestionBoxComponent {
   private submit() {
     this.lockedChange.emit(true);
     this.isDisabling.emit(true);
+    this.tryClosingDropdown();
     this.statService
       .incrementStats(this.isAnswerRight === 'yes', this.mainTesterCard.cardId)
       .subscribe();
@@ -98,6 +109,12 @@ export class QuestionBoxComponent {
       this.isDisabling.emit(false);
       this.pageTurn.emit(1);
     }, this.waitAfterSubmit);
+  }
+
+  private tryClosingDropdown() {
+    if (!!this.dropdown) {
+      this.dropdown.closePanel();
+    }
   }
 
   private generateAnswers(guess: string): Observable<string[]> {

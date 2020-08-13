@@ -12,7 +12,7 @@
     (keydown.enter)="onNext()"
     [matAutocomplete]="auto"
   />
-  <mat-autocomplete #auto="matAutocomplete">
+  <mat-autocomplete #auto="matAutocomplete" #autocompleteDropdown>
     <mat-option *ngFor="let possibleAnswer of possibleAnswers | async" [value]="possibleAnswer">
       {{ possibleAnswer }}
     </mat-option>

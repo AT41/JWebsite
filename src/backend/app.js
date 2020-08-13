@@ -2,8 +2,8 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 var cors = require('cors');
+var logger = require('./logger');
 
 var indexRouter = require('./routes/index');
 var supersetsRouter = require('./routes/supersets');
@@ -13,11 +13,11 @@ var statsRouter = require('./routes/stats');
 
 var loginModule = require('@at41/login-module');
 loginModule.setDatabaseCredials({
-  connectionLimit : 5,
-  host     : 'localhost',
-  user     : 'mainUser',
-  password : 'fulfillmentOverHappiness',
-  database : 'login_system'
+  connectionLimit: 5,
+  host: 'localhost',
+  user: 'mainUser',
+  password: 'fulfillmentOverHappiness',
+  database: 'login_system'
 });
 
 var app = express();
@@ -26,11 +26,11 @@ var app = express();
  * Modify CORS policy
  * Based off: https://brianflove.com/2017-03-22/express-cors-typescript/
  */
-const API_URL = ['http://localhost:4200'];
+const API_URL = ['http://localhost:4200', 'http://10.0.0.226', 'http://70.77.141.252'];
 const options = {
-  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'X-Access-Token'],
   credentials: true,
-  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
   origin: API_URL,
   preflightContinue: false
 };
@@ -40,11 +40,16 @@ app.use(cors(options));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Logger
+app.use(function(req, res, next) {
+  logger.log(req.url);
+  next.call();
+});
 
 // specifies what paths match to which router
 app.use('/', indexRouter);

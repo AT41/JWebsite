@@ -3,12 +3,13 @@ import { BackendService } from 'src/app/shared/services/backend-service/backend.
 import { Observable } from 'rxjs';
 import { Superset } from '../../../../backend/backend-models';
 import { UserAuthenticationService } from '../../users-lib/user-authentication-service/user-authentication.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SupersetService {
-  private readonly url = `http://localhost:3000/supersets`;
+  private readonly url = `${environment.backendUrl}/supersets`;
 
   constructor(
     private backendService: BackendService,

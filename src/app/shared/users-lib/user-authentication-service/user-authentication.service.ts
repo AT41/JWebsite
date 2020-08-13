@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BackendService } from 'src/app/shared/services/backend-service/backend.service';
 import { Observable, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserAuthenticationService {
-  private readonly sessionsUrl = `http://localhost:3000/sessions`;
+  private readonly sessionsUrl = `${environment.backendUrl}/sessions`;
   private readonly localStorageNonceKey = 'currentNonce';
   private readonly localStorageUsernameKey = 'currentUsername';
 
