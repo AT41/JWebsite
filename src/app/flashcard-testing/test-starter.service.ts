@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Set, KanjiCard, Card } from '../../backend/backend-models';
+import { Card, KanjiCard, Set } from '../../backend/backend-models';
 import { CardService } from '../shared/services/cardService/card.service';
-import { forkJoin, iif, Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import flatten from 'lodash-es/flatten';
 import shuffle from 'lodash-es/shuffle';
 import { Router } from '@angular/router';
+import { SetType } from '../shared/services/setService/set.service';
+
+export class TestOptions {}
 
 export class MainTesterCard {
   question: string;
@@ -35,9 +38,10 @@ export class TestStarterService {
     sets: Set[],
     questionAttributeName?: keyof KanjiCard | keyof Card,
     answerAttributeName?: keyof KanjiCard | keyof Card,
-    questionPrompt?: string
+    questionPrompt?: string,
+    testOptions?: TestOptions
   ): Observable<void> {
-    if (sets[0].CardType === 'kanji') {
+    if (sets[0].CardType === SetType.kanji) {
       questionAttributeName = questionAttributeName || 'Kanji';
       answerAttributeName = answerAttributeName || 'English';
       MainTesterCard.cardObjectAnswerAttributeName = answerAttributeName;
@@ -48,7 +52,7 @@ export class TestStarterService {
     }
     return forkJoin(
       sets.map((set) =>
-        sets.every((set1) => set1.CardType === 'kanji')
+        sets.every((set1) => set1.CardType === SetType.kanji)
           ? this.getKanjiCards(
               set,
               questionAttributeName as keyof KanjiCard,

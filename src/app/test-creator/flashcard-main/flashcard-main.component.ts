@@ -1,8 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { SupersetService } from '../../shared/services/supersetService/superset.service';
 import { Observable } from 'rxjs';
 import { SetService } from '../../shared/services/setService/set.service';
-import { Superset, Set } from '../../../backend/backend-models';
+import { Set, Superset } from '../../../backend/backend-models';
 import remove from 'lodash-es/remove';
 import { TestStarterService } from 'src/app/flashcard-testing/test-starter.service';
 import { Router } from '@angular/router';
@@ -22,6 +22,7 @@ export class FlashcardMainComponent implements OnInit {
   public set currentSuperset(superset: Superset) {
     this.sets$ = this.setService.getSets$(superset.Id);
     this._currentSuperset = superset;
+    this.selectedSets = [];
   }
   private _currentSuperset: Superset;
 

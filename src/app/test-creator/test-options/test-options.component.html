@@ -1,0 +1,10 @@
+<div>
+  <form [formGroup]="formGroup">
+    <div *ngFor="let controlName of names">
+      {{ controlName }}
+      <input type="text" [formControlName]="controlName" />
+    </div>
+    <div *ngIf="!!formGroup.errors">Error: {{ formGroup.errors | json }}</div>
+  </form>
+  <ng-content #startTestButton></ng-content>
+</div>
