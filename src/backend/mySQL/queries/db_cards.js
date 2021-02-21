@@ -5,7 +5,7 @@ var db_cards = {};
 
 db_cards.getCards = function getCards(cardObject, username) {
   return pool.my_db_query(
-    `SELECT * from cards
+    `SELECT * from card
     WHERE ${Object.keys(cardObject).reduce(
       (prev, curr) =>
         prev +
@@ -16,13 +16,6 @@ db_cards.getCards = function getCards(cardObject, username) {
     )}
     (CardOwner="global" OR CardOwner="${username}")
     ${cardObject['SetId'] == null ? 'LIMIT 20' : ''}`
-  );
-};
-
-db_cards.getKanjiCards = function getKanjiCards(setIdNumber, username) {
-  return pool.my_db_query(
-    `SELECT * from kanji_cards 
-        WHERE SetId=${setIdNumber} AND (CardOwner="global" OR CardOwner="${username}")`
   );
 };
 

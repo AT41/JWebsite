@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var rxjs = require('rxjs');
 // ASK ANTHONY FOR THIS FILE, CONTAINS SENSITIVE INFO TO LOG INTO DATABASE
 var config = require('../config');

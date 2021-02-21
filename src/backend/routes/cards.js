@@ -23,9 +23,4 @@ router.get('/cards', function(req, res, next) {
   db_cards.getCards(req.query).subscribe((val) => res.json(val));
 });
 
-router.get('/kanji_cards', function(req, res, next) {
-  const setId = req.query.setId;
-  db_cards.getKanjiCards(setId).subscribe((val) => res.json(val));
-});
-
 module.exports = router;

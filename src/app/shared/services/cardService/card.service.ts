@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 })
 export class CardService {
   private readonly urlCards = `${environment.backendUrl}/base_cards/cards`;
-  private readonly urlKanjiCards = `${environment.backendUrl}/base_cards/kanji_cards`;
 
   constructor(
     private backendService: BackendService,
@@ -31,13 +30,6 @@ export class CardService {
     const user = this.userAuthService.getLoggedInUser();
     return this.backendService.httpRequest(
       `${this.urlCards}/?SetId=${setId}&username=${user.username}&session_token=${user.sessionToken}`
-    );
-  }
-
-  public getKanjiCards$(setId: number): Observable<KanjiCard[]> {
-    const user = this.userAuthService.getLoggedInUser();
-    return this.backendService.httpRequest(
-      `${this.urlKanjiCards}/?setId=${setId}&username=${user.username}&session_token=${user.sessionToken}`
     );
   }
 }

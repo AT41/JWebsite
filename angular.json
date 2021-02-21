@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "japanesePractice"
+  "defaultProject": "japanesePractice",
+  "cli": {
+    "analytics": "e6b28de9-bbd2-4450-a54c-e3ac79bd3ded"
+  }
 }

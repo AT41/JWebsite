@@ -48,17 +48,7 @@ export class TestStarterService {
     }
     return forkJoin(
       sets.map((set) =>
-        sets.every((set1) => set1.CardType === 'kanji')
-          ? this.getKanjiCards(
-              set,
-              questionAttributeName as keyof KanjiCard,
-              answerAttributeName as keyof KanjiCard
-            )
-          : this.getCards(
-              set,
-              questionAttributeName as keyof Card,
-              answerAttributeName as keyof Card
-            )
+        this.getCards(set, questionAttributeName as keyof Card, answerAttributeName as keyof Card)
       )
     ).pipe(
       map((testerCards: MainTesterCard[][]) => {
@@ -66,27 +56,6 @@ export class TestStarterService {
         this.router.navigate(['test']);
       })
     );
-  }
-
-  private getKanjiCards(
-    set: Set,
-    questionAttributeName: keyof KanjiCard,
-    answerAttributeName: keyof KanjiCard
-  ): Observable<MainTesterCard[]> {
-    return this.cardService
-      .getKanjiCards$(set.Id)
-      .pipe(
-        map((kanjiCards: KanjiCard[]) =>
-          kanjiCards.map(
-            (kanjiCard) =>
-              new MainTesterCard(
-                kanjiCard[questionAttributeName as any],
-                kanjiCard[answerAttributeName as any],
-                kanjiCard.Id
-              )
-          )
-        )
-      );
   }
 
   private getCards(

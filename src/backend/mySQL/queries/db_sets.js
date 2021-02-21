@@ -4,9 +4,9 @@ var rxjsOperators = require('rxjs/operators');
 var db_sets = {};
 
 db_sets.getSets = function getSets(supersetIdNumber, username) {
-    return pool.my_db_query(
-        `SELECT * from sets WHERE SupersetId=${supersetIdNumber} AND SetOwner="global" OR SetOwner="${username}"`
-    );
-}
+  return pool.my_db_query(
+    `SELECT * from japanese.set WHERE SupersetId=${supersetIdNumber} AND SetOwner="global" OR SetOwner="${username}"`
+  );
+};
 
 module.exports = db_sets;
