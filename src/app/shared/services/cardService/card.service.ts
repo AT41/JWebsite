@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BackendService } from 'src/app/shared/services/backend-service/backend.service';
 import { Observable } from 'rxjs';
-import { Card, KanjiCard } from '../../../../backend/backend-models';
+import { Card } from '../../../../backend/backend-models';
 import { UserAuthenticationService } from '../../users-lib/user-authentication-service/user-authentication.service';
 import { environment } from 'src/environments/environment';
 

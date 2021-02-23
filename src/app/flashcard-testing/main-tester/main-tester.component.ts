@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MainTesterCard, TestStarterService } from '../test-starter.service';
-import { QuestionMarkerService } from './question-marker.service';
 
 @Component({
   selector: 'app-main-tester',
@@ -15,10 +14,7 @@ export class MainTesterComponent implements OnInit {
   public disableNavigation = false;
   public currentQuestionIndex = 0;
 
-  constructor(
-    private testStarterService: TestStarterService,
-    public questionMarkerService: QuestionMarkerService
-  ) {}
+  constructor(private testStarterService: TestStarterService) {}
 
   ngOnInit() {
     this.mainTesterCards = this.testStarterService.mainTesterCards;

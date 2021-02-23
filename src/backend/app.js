@@ -10,6 +10,7 @@ var supersetsRouter = require('./routes/supersets');
 var setsRouter = require('./routes/sets');
 var cardsRouter = require('./routes/cards');
 var statsRouter = require('./routes/stats');
+var englishdefinitionsRouter = require('./routes/englishdefinitions');
 
 var app = express();
 
@@ -47,9 +48,8 @@ app.use('/', indexRouter);
 app.use('/supersets', supersetsRouter);
 app.use('/sets', setsRouter);
 app.use('/base_cards', cardsRouter);
-//app.use('/sessions', loginModule.sessionsRoutes);
-//app.use('/users', loginModule.usersRoutes);
 app.use('/stats', statsRouter);
+app.use('/englishdefinitions', englishdefinitionsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

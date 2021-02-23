@@ -5,12 +5,8 @@
     *ngFor="let mainTesterCard of mainTesterCards; index as index"
     [checked]="index === currentQuestionIndex"
     (click)="currentQuestionIndex = index"
-    [class.correct]="
-      questionMarkerService.isGuessCorrect(userAnswers[index], mainTesterCard.answer)
-    "
-    [class.incorrect]="
-      !questionMarkerService.isGuessCorrect(userAnswers[index], mainTesterCard.answer)
-    "
+    [class.correct]="userAnswers[index] === mainTesterCard.answer"
+    [class.incorrect]="!(userAnswers[index] === mainTesterCard.answer)"
   >
     {{ mainTesterCard.question }}
   </mat-button-toggle>

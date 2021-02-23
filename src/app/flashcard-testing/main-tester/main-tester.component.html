@@ -6,14 +6,8 @@
         [checked]="index === currentQuestionIndex"
         (click)="currentQuestionIndex = index"
         [disabled]="disableNavigation"
-        [class.correct]="
-          locked[index] &&
-          questionMarkerService.isGuessCorrect(userAnswers[index], testerCard.answer)
-        "
-        [class.incorrect]="
-          locked[index] &&
-          !questionMarkerService.isGuessCorrect(userAnswers[index], testerCard.answer)
-        "
+        [class.correct]="locked[index] && userAnswers[index] === testerCard.answer"
+        [class.incorrect]="locked[index] && !(userAnswers[index] === testerCard.answer)"
       >
         {{ testerCard.question }}
       </mat-button-toggle>

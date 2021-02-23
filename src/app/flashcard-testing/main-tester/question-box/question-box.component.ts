@@ -9,11 +9,9 @@ import {
 import { FormControl, Validators } from '@angular/forms';
 import { StatService } from 'src/app/shared/services/statService/stat.service';
 import { MainTesterCard } from '../../test-starter.service';
-import { CardService } from 'src/app/shared/services/cardService/card.service';
+import { EnglishdefinitionService } from 'src/app/shared/services/englishdefinitionService/englishdefinition.service';
 import { map, switchMap, debounceTime, debounce } from 'rxjs/operators';
 import { Observable, timer, EMPTY, of } from 'rxjs';
-import flatten from 'lodash-es/flatten';
-import { QuestionMarkerService } from '../question-marker.service';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 export class QuestionBoxOptions {
@@ -62,20 +60,14 @@ export class QuestionBoxComponent {
     if (!this.formControl.disabled) {
       return null;
     }
-    return this.questionMarkerService.isGuessCorrect(
-      this.formControl.value,
-      this.mainTesterCard.answer
-    )
-      ? 'yes'
-      : 'no';
+    return this.formControl.value === this.mainTesterCard.answer ? 'yes' : 'no';
   }
 
   private waitAfterSubmit = 1000;
 
   constructor(
     private statService: StatService,
-    private cardService: CardService,
-    private questionMarkerService: QuestionMarkerService
+    private englishdefinitionsService: EnglishdefinitionService
   ) {
     this.formControl = new FormControl('', Validators.required);
     this.formControl.valueChanges.subscribe((userAnswer) => this.userAnswerChange.emit(userAnswer));
@@ -120,25 +112,8 @@ export class QuestionBoxComponent {
   private generateAnswers(guess: string): Observable<string[]> {
     const cardSearch = {} as any;
     guess = guess.toLowerCase();
-    cardSearch[MainTesterCard.cardObjectAnswerAttributeName] = guess;
-    return this.cardService.searchCards$(cardSearch).pipe(
-      map(
-        (cards) =>
-          Array.from(
-            new Set(
-              flatten(
-                cards.map((card) => {
-                  const equivalentAnswers = (card[
-                    MainTesterCard.cardObjectAnswerAttributeName
-                  ] as string).split(/[;|]/);
-                  return equivalentAnswers
-                    .map((ans) => ans.toLowerCase().trim())
-                    .filter((ans) => ans.indexOf(guess) !== -1);
-                })
-              ).sort((a, b) => a.indexOf(guess) - b.indexOf(guess))
-            )
-          ).slice(0, 10) as string[]
-      )
-    );
+    return this.englishdefinitionsService
+      .searchDefinitions$(guess)
+      .pipe(map((vals) => vals.map((val) => val['definition'])));
   }
 }
