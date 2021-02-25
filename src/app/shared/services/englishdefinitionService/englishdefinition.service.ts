@@ -24,9 +24,7 @@ export class EnglishdefinitionService {
     );
   }
 
-  public getDefinitionsForCards$(
-    cards: Card[]
-  ): Observable<{ card: Card; definitions: String[] }[]> {
+  public getDefinitionsForCards$(cards: Card[]): Observable<(Card & Englishdefinition)[]> {
     return this.backendService
       .httpRequest(
         `${this.urlEnglishDefinitions}/match_card_ids?cardIds=${cards
@@ -34,12 +32,19 @@ export class EnglishdefinitionService {
           .join(',')}`
       )
       .pipe(
-        map((defs) =>
+        map((defs: Englishdefinition[]) =>
           cards.map((card) => {
-            return {
-              card: card,
-              definitions: defs.filter((def) => def.cardId === card.Id).map((def) => def.definition)
-            };
+            const defsForCard = defs.filter((def) => def.CardId === card.Id);
+            return Object.assign(
+              card,
+              defsForCard.reduce((prev, curr, index) => {
+                if (index === 0) {
+                  return prev;
+                }
+                prev.Definition = prev.Definition.concat(';' + curr.Definition);
+                return prev;
+              }, defsForCard[0])
+            );
           })
         )
       );

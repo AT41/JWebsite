@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Set, Card } from '../../backend/backend-models';
+import { Set, Card, Englishdefinition } from '../../backend/backend-models';
 import { CardService } from '../shared/services/cardService/card.service';
-import { forkJoin, iif, Observable } from 'rxjs';
+import { forkJoin, iif, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import flatten from 'lodash-es/flatten';
 import shuffle from 'lodash-es/shuffle';
@@ -10,14 +10,14 @@ import { EnglishdefinitionService } from '../shared/services/englishdefinitionSe
 
 export class MainTesterCard {
   question: string;
-  answer: string;
+  answers: string[];
   cardId: number;
 
-  public static cardObjectAnswerAttributeName: keyof Card;
+  public static cardObjectAnswerAttributeName: keyof Card | keyof Englishdefinition;
 
-  constructor(question: string, answer: string, cardId: number) {
+  constructor(question: string, answer: string[], cardId: number) {
     this.question = question;
-    this.answer = answer; // TODO ANTHONY Consider getting these returned as hashed values from the backend
+    this.answers = answer; // TODO ANTHONY Consider getting these returned as hashed values from the backend
     this.cardId = cardId;
   }
 }
@@ -38,16 +38,16 @@ export class TestStarterService {
 
   public startTest(
     sets: Set[],
-    questionAttributeName?: keyof Card,
-    answerAttributeName?: keyof Card,
+    questionAttributeName?: keyof Card | keyof Englishdefinition,
+    answerAttributeName?: keyof Card | keyof Englishdefinition,
     questionPrompt?: string
   ): Observable<void> {
     questionAttributeName = questionAttributeName || 'Kanji';
-    MainTesterCard.cardObjectAnswerAttributeName = answerAttributeName || 'Furigana';
+    MainTesterCard.cardObjectAnswerAttributeName = answerAttributeName || 'Definition';
 
     return forkJoin(
       sets.map((set) =>
-        this.getCards(set, questionAttributeName as keyof Card, answerAttributeName as keyof Card)
+        this.getCards(set, questionAttributeName, MainTesterCard.cardObjectAnswerAttributeName)
       )
     ).pipe(
       map((testerCards: MainTesterCard[][]) => {
@@ -59,20 +59,22 @@ export class TestStarterService {
 
   private getCards(
     set: Set,
-    questionAttributeName: keyof Card,
-    answerAttributeName: keyof Card
+    questionAttributeName: keyof Card | keyof Englishdefinition,
+    answerAttributeName: keyof Card | keyof Englishdefinition
   ): Observable<MainTesterCard[]> {
-    this;
     return this.cardService.getCards$(set.Id).pipe(
-      switchMap((cards: Card[]) => this.englishdefinitionService.getDefinitionsForCards$(cards)),
-      map((cardsAndDefinitions) =>
-        cardsAndDefinitions.map(
-          (cardAndDefinition) =>
+      switchMap((cards: Card[]) =>
+        answerAttributeName === 'Definition' || questionAttributeName === 'Definition'
+          ? this.englishdefinitionService.getDefinitionsForCards$(cards)
+          : of(cards)
+      ),
+      map((cardsAndOrDefinitions) =>
+        cardsAndOrDefinitions.map(
+          (cardsAndOrDefinition) =>
             new MainTesterCard(
-              cardAndDefinition.card[questionAttributeName as any],
-              cardAndDefinition.card[answerAttributeName as any] ||
-                cardAndDefinition.definitions.join(';'),
-              cardAndDefinition.card.Id
+              cardsAndOrDefinition[questionAttributeName],
+              cardsAndOrDefinition[answerAttributeName].split(';'),
+              cardsAndOrDefinition.Id
             )
         )
       )

@@ -5,14 +5,14 @@
     *ngFor="let mainTesterCard of mainTesterCards; index as index"
     [checked]="index === currentQuestionIndex"
     (click)="currentQuestionIndex = index"
-    [class.correct]="userAnswers[index] === mainTesterCard.answer"
-    [class.incorrect]="!(userAnswers[index] === mainTesterCard.answer)"
+    [class.correct]="isAnswerRight(mainTesterCard.answers, index) | async"
+    [class.incorrect]="!(isAnswerRight(mainTesterCard.answers, index) | async)"
   >
     {{ mainTesterCard.question }}
   </mat-button-toggle>
 </mat-button-toggle-group>
 <div *ngIf="currentQuestionIndex != -1">
   <p>Question: {{ mainTesterCards[currentQuestionIndex].question }}</p>
-  <p>Answer: {{ mainTesterCards[currentQuestionIndex].answer }}</p>
+  <p>Answer: {{ mainTesterCards[currentQuestionIndex].answers }}</p>
   <p>You answered: {{ userAnswers[currentQuestionIndex] }}</p>
 </div>

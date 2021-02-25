@@ -32,7 +32,7 @@
 </button>
 <div *ngIf="!!options.showAnswersImmediately && formControl.disabled">
   The answer was
-  <p class="correct inline">{{ mainTesterCard.answer }}</p>
+  <p class="correct inline">{{ mainTesterCard.answers }}</p>
 </div>
 <img *ngIf="isAnswerRight === 'yes'" src="./../../../../assets/checkmark.png" />
 <img *ngIf="isAnswerRight === 'no'" src="./../../../../assets/xmark.png" />

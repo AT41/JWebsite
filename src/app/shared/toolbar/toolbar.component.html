@@ -6,7 +6,12 @@
     <span class="flex-spacer"></span>
     <span class="nav-links-lg">
       <a mat-button routerLink="./flashcards">Flashcards</a>
-      <a mat-button [disabled]="!(isAuthorized$ | async)" routerLink="./flashcard-creator">
+      <a
+        mat-button
+        [disabled]="!(isAuthorized$ | async)"
+        routerLink="./flashcard-creator"
+        [class.disabled]="!(isAuthorized$ | async)"
+      >
         Create Cards
       </a>
       <button mat-button *ngIf="!(isAuthorized$ | async)" (click)="createRegisterDialog()">

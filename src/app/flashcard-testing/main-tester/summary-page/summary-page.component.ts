@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { MainTesterCard } from '../../test-starter.service';
 @Component({
   selector: 'app-summary-page',
@@ -16,8 +17,12 @@ export class SummaryPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.score = this.userAnswers.filter(
-      (ans, index) => ans === this.mainTesterCards[index].answer
+    this.score = this.userAnswers.filter((ans, index) =>
+      this.mainTesterCards[index].answers.some((answer) => answer === ans)
     ).length;
+  }
+
+  public isAnswerRight(answers: string[], index: number): Observable<boolean> {
+    return of(answers.some((answer) => answer === this.userAnswers[index]));
   }
 }

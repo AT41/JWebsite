@@ -6,8 +6,8 @@
         [checked]="index === currentQuestionIndex"
         (click)="currentQuestionIndex = index"
         [disabled]="disableNavigation"
-        [class.correct]="locked[index] && userAnswers[index] === testerCard.answer"
-        [class.incorrect]="locked[index] && !(userAnswers[index] === testerCard.answer)"
+        [class.correct]="locked[index] && isAnswerRight(testerCard.answers, index) | async"
+        [class.incorrect]="locked[index] && !(isAnswerRight(testerCard.answers, index) | async)"
       >
         {{ testerCard.question }}
       </mat-button-toggle>

@@ -60,7 +60,9 @@ export class QuestionBoxComponent {
     if (!this.formControl.disabled) {
       return null;
     }
-    return this.formControl.value === this.mainTesterCard.answer ? 'yes' : 'no';
+    return this.mainTesterCard.answers.some((answer) => answer === this.formControl.value)
+      ? 'yes'
+      : 'no';
   }
 
   private waitAfterSubmit = 1000;
@@ -114,6 +116,6 @@ export class QuestionBoxComponent {
     guess = guess.toLowerCase();
     return this.englishdefinitionsService
       .searchDefinitions$(guess)
-      .pipe(map((vals) => vals.map((val) => val['definition'])));
+      .pipe(map((vals) => vals.map((val) => val['Definition'])));
   }
 }
