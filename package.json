@@ -8,9 +8,6 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "server": "node ./src/backend/bin/www",
-    "hereAreTheDevOnlyCommands": "echo this is a comment, not a command",
-    "devserver": "nodemon ./src/backend/bin/www",
     "initmysqlinterfaces": "npx @rmp135/sql-ts -c ./src/backend/sql-ts-config.json"
   },
   "browser": {
