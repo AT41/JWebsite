@@ -14,9 +14,6 @@
       >
         Create Cards
       </a>
-      <button mat-button *ngIf="!(isAuthorized$ | async)" (click)="createRegisterDialog()">
-        Register
-      </button>
       <button mat-button *ngIf="!(isAuthorized$ | async)" (click)="createLoginDialog()">
         Login
       </button>
@@ -30,9 +27,6 @@
         <a mat-menu-item [disabled]="!(isAuthorized$ | async)" routerLink="./flashcard-creator">
           Create Cards
         </a>
-        <button mat-menu-item *ngIf="!(isAuthorized$ | async)" (click)="createRegisterDialog()">
-          Register
-        </button>
         <button mat-menu-item *ngIf="!(isAuthorized$ | async)" (click)="createLoginDialog()">
           Login
         </button>

@@ -1,9 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { UserAuthenticationService } from '../users-lib/user-authentication-service/user-authentication.service';
-import { LoginComponent } from '../users-lib/login-component/login.component';
-import { RegisterUserComponent } from '../users-lib/register-user/register-user.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { FirebaseAuthService } from '../services/firebase-auth-service/firebase-auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-toolbar',
@@ -16,19 +15,15 @@ export class ToolbarComponent implements OnInit {
   public title: string = 'JWebsite';
 
   constructor(
-    private userAuthenticationService: UserAuthenticationService,
+    private firebaseAuthService: FirebaseAuthService,
     private matDialogService: MatDialog
   ) {
-    this.isAuthorized$ = this.userAuthenticationService.isAuthorized$();
+    this.isAuthorized$ = firebaseAuthService.user$.pipe(map((user) => !!user));
   }
 
   ngOnInit() {}
 
-  createRegisterDialog() {
-    const registerModal = RegisterUserComponent.createDialog(this.matDialogService);
-  }
-
   createLoginDialog() {
-    const loginModal = LoginComponent.createDialog(this.matDialogService);
+    this.firebaseAuthService.openDialog(this.matDialogService);
   }
 }

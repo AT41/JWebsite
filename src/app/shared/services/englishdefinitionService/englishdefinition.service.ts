@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Card, Englishdefinition } from 'src/backend/backend-models';
-import { UserAuthenticationService } from '../../users-lib/user-authentication-service/user-authentication.service';
 import { BackendService } from '../backend-service/backend.service';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
+import { FirebaseAuthService } from '../firebase-auth-service/firebase-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +14,11 @@ export class EnglishdefinitionService {
 
   constructor(
     private backendService: BackendService,
-    private userAuthService: UserAuthenticationService
+    private firebaseAuthService: FirebaseAuthService
   ) {}
 
   public searchDefinitions$(answer: String): Observable<Englishdefinition[]> {
-    const user = this.userAuthService.getLoggedInUser();
+    const user = this.firebaseAuthService.user$.value;
     return this.backendService.httpRequest(
       `${this.urlEnglishDefinitions}/search_definition?definition=${answer}`
     );

@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, iif, of } from 'rxjs';
 import { Stat } from '../../../../backend/backend-models';
 import { BackendService } from '../backend-service/backend.service';
-import { UserAuthenticationService } from '../../users-lib/user-authentication-service/user-authentication.service';
 import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { FirebaseAuthService } from '../firebase-auth-service/firebase-auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class StatService {
 
   constructor(
     private backendService: BackendService,
-    private userAuthenticationService: UserAuthenticationService
+    private firebaseAuthService: FirebaseAuthService
   ) {}
 
   public getStats(statOwner: string, cardId: number): Observable<Stat> {
@@ -25,19 +25,16 @@ export class StatService {
   }
 
   public incrementStats(isCorrect: boolean, cardId: number) {
-    const user = this.userAuthenticationService.getLoggedInUser();
-    return this.userAuthenticationService
-      .isAuthorized$()
-      .pipe(
-        switchMap((isAuthorized) =>
-          iif(
-            () => isAuthorized,
-            this.backendService.httpRequest(
-              `${this.urlIncrementStats}/?isCorrect=${isCorrect}&statOwner=${user.username}&cardId=${cardId}&session_token=${user.sessionToken}`
-            ),
-            of(null)
-          )
+    return this.firebaseAuthService.user$.pipe(
+      switchMap((user) =>
+        iif(
+          () => !!user,
+          this.backendService.httpRequest(
+            `${this.urlIncrementStats}/?isCorrect=${isCorrect}&statOwner=${user.email}&cardId=${cardId}`
+          ),
+          of(null)
         )
-      );
+      )
+    );
   }
 }
