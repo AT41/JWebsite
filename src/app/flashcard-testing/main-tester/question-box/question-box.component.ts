@@ -57,7 +57,7 @@ export class QuestionBoxComponent {
   public possibleAnswers: Observable<string[]>;
 
   public get isAnswerRight(): 'yes' | 'no' | null {
-    if (!this.formControl.disabled) {
+    if (this.formControl.enabled) {
       return null;
     }
     return this.mainTesterCard.answers.some((answer) => answer === this.formControl.value)
@@ -96,10 +96,10 @@ export class QuestionBoxComponent {
     this.lockedChange.emit(true);
     this.isDisabling.emit(true);
     this.tryClosingDropdown();
-    this.statService
-      .incrementStats(this.isAnswerRight === 'yes', this.mainTesterCard.cardId)
-      .subscribe();
     setTimeout(() => {
+      this.statService
+        .incrementStats(this.isAnswerRight === 'yes', this.mainTesterCard.cardId)
+        .subscribe();
       this.isDisabling.emit(false);
       this.pageTurn.emit(1);
     }, this.waitAfterSubmit);

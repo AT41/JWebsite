@@ -3,10 +3,11 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import * as firebaseui from 'firebaseui';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { FirebaseAuthDialogComponent } from './firebase-auth-dialog/firebase-auth-dialog.component';
 import { environment } from 'src/environments/environment';
 import { BackendService } from '../backend-service/backend.service';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -33,14 +34,6 @@ export class FirebaseAuthService {
     firebase.auth().onAuthStateChanged((user) => {
       this._user.next(user);
     });
-
-    /*firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      // Send token to your backend via HTTPS
-      console.log(idToken);
-      // ...
-    }).catch(function(error) {
-      // Handle error
-    });*/
   }
 
   public openDialog(matDialogService: MatDialog) {
@@ -64,12 +57,22 @@ export class FirebaseAuthService {
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
           console.log(authResult);
-          this.backendService
-            .httpRequest(`${this.urlAddUser}?idToken=${authResult.credential.idToken}`)
-            .subscribe();
+          this.tryCreateUser$().subscribe();
           this.ngZone.run(() => matDialog.close());
         }
       }
     });
+  }
+
+  private tryCreateUser$() {
+    return this.getFirebaseIdToken$().pipe(
+      switchMap((idToken) =>
+        this.backendService.httpRequest(`${this.urlAddUser}?idToken=${idToken}`)
+      )
+    );
+  }
+
+  private getFirebaseIdToken$() {
+    return from(firebase.auth().currentUser.getIdToken(true));
   }
 }
