@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backendUrl: 'http://70.77.141.252:3000'
+  backendUrl: 'https://backend-vbreh6cc2q-uw.a.run.app'
 };

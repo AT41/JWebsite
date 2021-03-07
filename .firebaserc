@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "jwebsite-e97d3": {
+      "hosting": {
+        "japanesePractice": [
+          "jwebsite-e97d3"
+        ]
+      }
+    }
+  }
+}

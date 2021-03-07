@@ -56,7 +56,6 @@ export class FirebaseAuthService {
       signInFlow: 'popup',
       callbacks: {
         signInSuccessWithAuthResult: (authResult, redirectUrl) => {
-          console.log(authResult);
           this.tryCreateUser$().subscribe();
           this.ngZone.run(() => matDialog.close());
         }
