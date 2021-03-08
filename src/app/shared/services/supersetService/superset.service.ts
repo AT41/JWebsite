@@ -18,6 +18,6 @@ export class SupersetService {
 
   public getSupersets$(): Observable<Superset[]> {
     const user = this.firebaseAuthService.user$.value;
-    return this.backendService.httpRequest(`${this.url}?username=${user.email}`);
+    return this.backendService.httpRequest(`${this.url}?${user ? 'username=' + user.email : ''}`);
   }
 }

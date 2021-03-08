@@ -25,16 +25,11 @@ export class StatService {
   }
 
   public incrementStats(isCorrect: boolean, cardId: number) {
-    return this.firebaseAuthService.user$.pipe(
-      switchMap((user) =>
-        iif(
-          () => !!user,
-          this.backendService.httpRequest(
-            `${this.urlIncrementStats}/?isCorrect=${isCorrect}&statOwner=${user.email}&cardId=${cardId}`
-          ),
-          of(null)
+    var user = this.firebaseAuthService.user$.value;
+    return user
+      ? this.backendService.httpRequest(
+          `${this.urlIncrementStats}/?isCorrect=${isCorrect}&statOwner=${user.email}&cardId=${cardId}`
         )
-      )
-    );
+      : of(null);
   }
 }

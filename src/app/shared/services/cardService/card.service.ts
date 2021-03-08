@@ -22,14 +22,14 @@ export class CardService {
       `${this.urlCards}/?${Object.keys(cardDetails).reduce(
         (prev, curr) => prev + curr + '=' + cardDetails[curr] + '&',
         ''
-      )}username=${user.email}`
+      )}${user ? 'username=' + user.email : ''}`
     );
   }
 
   public getCards$(setId: number): Observable<Card[]> {
     const user = this.firebaseAuthService.user$.value;
     return this.backendService.httpRequest(
-      `${this.urlCards}/?SetId=${setId}&username=${user.email}`
+      `${this.urlCards}/?SetId=${setId}${user ? '&username=' + user.email : ''}`
     );
   }
 }

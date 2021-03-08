@@ -19,7 +19,7 @@ export class SetService {
   public getSets$(supersetId: number): Observable<Set[]> {
     const user = this.firebaseAuthService.user$.value;
     return this.backendService.httpRequest(
-      `${this.url}?supersetId=${supersetId}&username=${user.email}`
+      `${this.url}?supersetId=${supersetId}${user ? '&useremail=' + user.email : ''}`
     );
   }
 }
