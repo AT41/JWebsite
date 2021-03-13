@@ -1,7 +1,6 @@
 mat-button-toggle-group {
   max-width: 100%;
   overflow-x: auto;
-  margin-bottom: 1rem;
 }
 
 :host {
@@ -13,6 +12,8 @@ mat-button-toggle-group.expanding-description {
   border: unset;
   border-radius: unset;
   align-items: flex-start;
+  margin-bottom: 1rem;
+
   mat-button-toggle.first-element {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
@@ -23,5 +24,23 @@ mat-button-toggle-group.expanding-description {
   }
   mat-button-toggle {
     border: solid 1px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.sets-selector {
+  display: flex;
+  align-content: stretch;
+  .buttons {
+    margin-left: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    button {
+      border-radius: 4px;
+    }
+  }
+  mat-button-toggle {
+    display: flex;
+    align-items: center;
   }
 }

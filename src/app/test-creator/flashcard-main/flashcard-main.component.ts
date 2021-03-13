@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
 import { SupersetService } from '../../shared/services/supersetService/superset.service';
 import { Observable } from 'rxjs';
 import { SetService } from '../../shared/services/setService/set.service';
@@ -6,6 +6,7 @@ import { Superset, Set } from '../../../backend/backend-models';
 import remove from 'lodash-es/remove';
 import { TestStarterService } from 'src/app/flashcard-testing/test-starter.service';
 import { Router } from '@angular/router';
+import { MatButtonToggleGroup } from '@angular/material';
 
 @Component({
   selector: 'app-flashcard-main',
@@ -26,6 +27,9 @@ export class FlashcardMainComponent implements OnInit {
   private _currentSuperset: Superset;
 
   public selectedSets: Set[] = [];
+  public hoveredIndex = -1;
+
+  @ViewChild('sets', { read: MatButtonToggleGroup }) sets: MatButtonToggleGroup;
 
   constructor(
     private supersetService: SupersetService,
@@ -48,5 +52,30 @@ export class FlashcardMainComponent implements OnInit {
 
   startTest() {
     this.testStarter.startTest(this.selectedSets).subscribe();
+  }
+
+  clearSelectedSets() {
+    this.sets._buttonToggles.forEach((toggle) => {
+      if (toggle.checked === true) {
+        this.selectSet(toggle.value);
+        toggle.checked = false;
+      }
+    });
+  }
+
+  selectAllSets() {
+    this.sets._buttonToggles.forEach((toggle) => {
+      if (toggle.checked === false) {
+        this.selectSet(toggle.value);
+        toggle.checked = true;
+      }
+    });
+  }
+
+  showDescription(index: number) {
+    this.hoveredIndex = index;
+  }
+  hideDescription() {
+    this.hoveredIndex = -1;
   }
 }

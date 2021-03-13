@@ -5,12 +5,27 @@ $margin: 24px;
   * {
     width: 100%;
   }
+}
+.description {
+  max-height: 0;
+  overflow: hidden;
+
   .description-text {
     white-space: initial;
     line-height: initial;
     text-align: left;
     margin: calc(#{$margin} / 2) 0;
   }
+}
+.description.active {
+  animation-name: open-description;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+.description.inactive {
+  animation-name: close-description;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
 }
 
 mat-divider {
@@ -26,5 +41,22 @@ mat-divider {
   margin: $margin 0;
   mat-divider {
     margin: $margin 0;
+  }
+}
+
+@keyframes open-description {
+  0% {
+    max-height: 0;
+  }
+  100% {
+    max-height: 200px;
+  }
+}
+@keyframes close-description {
+  0% {
+    max-height: 200px;
+  }
+  100% {
+    max-height: 0;
   }
 }

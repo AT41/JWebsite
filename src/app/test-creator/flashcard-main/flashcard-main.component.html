@@ -1,22 +1,29 @@
 <mat-button-toggle-group #supersetToggle class="expanding-description">
   <mat-button-toggle
-    *ngFor="let superset of supersets$ | async; first as first; last as last"
+    *ngFor="let superset of supersets$ | async; first as first; last as last; index as index"
     (click)="currentSuperset = superset"
     [ngClass]="{ 'first-element': first, 'last-element': last }"
+    (mouseenter)="showDescription(index)"
+    (mouseleave)="hideDescription()"
   >
-    <app-superset
-      [superset]="superset"
-      [isSelected]="currentSuperset?.Id === superset.Id"
-    ></app-superset>
+    <app-superset [superset]="superset" [isSelected]="hoveredIndex === index"></app-superset>
   </mat-button-toggle>
 </mat-button-toggle-group>
 
 <div *ngIf="sets$ | async as sets" class="sets-selector">
-  <mat-button-toggle-group [multiple]="true">
-    <mat-button-toggle *ngFor="let set of sets" (click)="selectSet(set)">
+  <mat-button-toggle-group #sets [multiple]="true">
+    <mat-button-toggle *ngFor="let set of sets" [value]="set" (click)="selectSet(set)">
       {{ set.SetName }}
     </mat-button-toggle>
   </mat-button-toggle-group>
+  <div class="buttons">
+    <button mat-icon-button class="filled-button" (click)="clearSelectedSets()">
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button mat-icon-button class="filled-button" (click)="selectAllSets()">
+      <mat-icon>select_all</mat-icon>
+    </button>
+  </div>
 </div>
 
 <div class="controls" *ngIf="selectedSets.length > 0">

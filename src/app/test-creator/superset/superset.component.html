@@ -5,7 +5,11 @@
 <div class="picture">
   <img *ngIf="superset.Picture" src="{{ 'assets/' + superset.Picture }}" />
 </div>
-<div *ngIf="isSelected && superset.SupersetDescription" class="description">
+<div
+  *ngIf="superset.SupersetDescription"
+  class="description"
+  [ngClass]="{ active: selected, inactive: !selected && touched }"
+>
   <mat-divider></mat-divider>
   <div class="description-text">{{ superset.SupersetDescription }}</div>
 </div>

@@ -9,7 +9,16 @@ import { Superset } from '../../../backend/backend-models';
 })
 export class SupersetComponent implements OnInit {
   @Input() superset: Superset;
-  @Input() isSelected: boolean;
+  @Input() set isSelected(selected: boolean) {
+    this.selected = selected;
+    if (selected) {
+      this.touched = true;
+    }
+  }
+
+  public selected;
+  public touched = false;
+
   constructor() {}
 
   ngOnInit() {}
