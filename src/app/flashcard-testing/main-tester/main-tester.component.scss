@@ -1,25 +1,30 @@
 .flex-left {
-    display: flex;
+  display: flex;
 }
 
 .questions-container {
-    max-height: 80vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding-right: 16px;
-    display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 16px;
+  display: flex;
 }
 
 mat-button-toggle-group {
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
 }
 
 .correct {
-    background-color: rgba(124, 255, 124, 0.849)
+  background-color: rgba(124, 255, 124, 0.849);
 }
 
 .incorrect {
-    background-color: rgba(255, 124, 124, 0.849)
+  background-color: rgba(255, 124, 124, 0.849);
+}
+
+:host {
+  flex: 1 1 auto;
+  display: flex;
+  height: 0;
 }

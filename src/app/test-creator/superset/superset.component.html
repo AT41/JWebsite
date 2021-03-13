@@ -1,1 +1,11 @@
-<div>{{superset.SupersetDescription}}</div>
+<div class="name">
+  {{ superset.SupersetName }}
+  <mat-divider></mat-divider>
+</div>
+<div class="picture">
+  <img *ngIf="superset.Picture" src="{{ 'assets/' + superset.Picture }}" />
+</div>
+<div *ngIf="isSelected && superset.SupersetDescription" class="description">
+  <mat-divider></mat-divider>
+  <div class="description-text">{{ superset.SupersetDescription }}</div>
+</div>

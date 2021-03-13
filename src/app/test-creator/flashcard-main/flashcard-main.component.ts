@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SupersetService } from '../../shared/services/supersetService/superset.service';
 import { Observable } from 'rxjs';
 import { SetService } from '../../shared/services/setService/set.service';

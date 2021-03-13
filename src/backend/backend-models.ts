@@ -48,6 +48,7 @@ export interface Superset {
   SupersetName: string;
   SupersetDescription: string | null;
   SupersetOwner: string | null;
+  Picture: string | null;
 }
 export interface User {
   Id: string;

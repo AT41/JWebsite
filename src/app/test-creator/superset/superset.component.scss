@@ -1,0 +1,30 @@
+$margin: 24px;
+
+:host > div {
+  width: min(10rem, 30vw);
+  * {
+    width: 100%;
+  }
+  .description-text {
+    white-space: initial;
+    line-height: initial;
+    text-align: left;
+    margin: calc(#{$margin} / 2) 0;
+  }
+}
+
+mat-divider {
+  margin-top: $margin;
+}
+.picture {
+  line-height: 0;
+  margin-bottom: $margin;
+}
+.name {
+  font-weight: 500;
+  line-height: 0;
+  margin: $margin 0;
+  mat-divider {
+    margin: $margin 0;
+  }
+}
