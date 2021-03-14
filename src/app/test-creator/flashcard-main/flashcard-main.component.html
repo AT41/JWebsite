@@ -27,5 +27,6 @@
 </div>
 
 <div class="controls" *ngIf="selectedSets.length > 0">
+  <app-test-options [setIds]="selectedSets"></app-test-options>
   <button mat-raised-button color="primary" (click)="startTest()">Start Test</button>
 </div>

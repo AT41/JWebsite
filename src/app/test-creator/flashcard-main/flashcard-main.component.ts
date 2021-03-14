@@ -3,9 +3,7 @@ import { SupersetService } from '../../shared/services/supersetService/superset.
 import { Observable } from 'rxjs';
 import { SetService } from '../../shared/services/setService/set.service';
 import { Superset, Set } from '../../../backend/backend-models';
-import remove from 'lodash-es/remove';
 import { TestStarterService } from 'src/app/flashcard-testing/test-starter.service';
-import { Router } from '@angular/router';
 import { MatButtonToggleGroup } from '@angular/material';
 
 @Component({
@@ -23,6 +21,7 @@ export class FlashcardMainComponent implements OnInit {
   public set currentSuperset(superset: Superset) {
     this.sets$ = this.setService.getSets$(superset.Id);
     this._currentSuperset = superset;
+    this.selectedSets = [];
   }
   private _currentSuperset: Superset;
 
@@ -34,8 +33,7 @@ export class FlashcardMainComponent implements OnInit {
   constructor(
     private supersetService: SupersetService,
     private setService: SetService,
-    private testStarter: TestStarterService,
-    private router: Router
+    private testStarter: TestStarterService
   ) {}
 
   ngOnInit() {
@@ -44,9 +42,9 @@ export class FlashcardMainComponent implements OnInit {
 
   selectSet(set: Set) {
     if (this.selectedSets.findIndex((selSet) => selSet.Id === set.Id) === -1) {
-      this.selectedSets.push(set);
+      this.selectedSets = [...this.selectedSets, set];
     } else {
-      remove(this.selectedSets, (selSet) => selSet.Id === set.Id);
+      this.selectedSets = this.selectedSets.filter((selSet) => selSet.Id !== set.Id);
     }
   }
 

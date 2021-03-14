@@ -8,7 +8,7 @@ import { CustomCreatorComponent } from './custom-creator/custom-creator.componen
 const routes: Routes = [
   { path: 'flashcards', component: FlashcardMainComponent },
   { path: 'test', component: MainTesterComponent },
-  { path: 'flashcard-creator', component: CustomCreatorComponent },
+  // { path: 'flashcard-creator', component: CustomCreatorComponent },
   { path: '**', component: HomepageComponent }
 ];
 

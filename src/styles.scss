@@ -14,3 +14,7 @@ button.filled-button {
   background-color: mat-color($primary);
   color: white;
 }
+
+mat-button-toggle button {
+  height: 100%;
+}

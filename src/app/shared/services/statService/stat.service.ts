@@ -20,7 +20,7 @@ export class StatService {
 
   public getStats(statOwner: string, cardId: number): Observable<Stat> {
     return this.backendService.httpRequest(
-      `${this.urlGetStats}/?statOwner=${statOwner}&cardId=${cardId}`
+      `${this.urlGetStats}?statOwner=${statOwner}&cardId=${cardId}`
     );
   }
 
@@ -28,7 +28,7 @@ export class StatService {
     var user = this.firebaseAuthService.user$.value;
     return user
       ? this.backendService.httpRequest(
-          `${this.urlIncrementStats}/?isCorrect=${isCorrect}&statOwner=${user.email}&cardId=${cardId}`
+          `${this.urlIncrementStats}?isCorrect=${isCorrect}&statOwner=${user.email}&cardId=${cardId}`
         )
       : of(null);
   }

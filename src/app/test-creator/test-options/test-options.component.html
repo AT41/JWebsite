@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Test Options
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="questionsPreview"></div>
+    <form [formGroup]="testOptionsFormGroup">
+      <div>
+        <mat-checkbox formControlName="yomigana" (click)="check()">
+          <mat-label>Show Hiragana Over Kanji</mat-label>
+        </mat-checkbox>
+        <mat-form-field appearance="outline">
+          <mat-label>Number of Questions</mat-label>
+          <input matInput formControlName="numberOfQuestions" />
+          <div>of {{ totalCards$ | async }}</div>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

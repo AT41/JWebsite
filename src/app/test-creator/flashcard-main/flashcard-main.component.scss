@@ -6,13 +6,15 @@ mat-button-toggle-group {
 :host {
   display: block;
   margin: 1rem;
+  > * {
+    margin-bottom: 1rem;
+  }
 }
 
 mat-button-toggle-group.expanding-description {
   border: unset;
   border-radius: unset;
   align-items: flex-start;
-  margin-bottom: 1rem;
 
   mat-button-toggle.first-element {
     border-top-left-radius: 4px;
