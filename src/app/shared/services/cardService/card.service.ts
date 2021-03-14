@@ -37,10 +37,8 @@ export class CardService {
 
   public getCardCount$(setIds: number[]): Observable<number> {
     const user = this.firebaseAuthService.user$.value;
-    return this.backendService
-      .httpRequest(
-        `${this.urlCardCount}?SetIds=${setIds.join(',')}${user ? '&username=' + user.email : ''}`
-      )
-      .pipe(tap((val) => console.log(val)));
+    return this.backendService.httpRequest(
+      `${this.urlCardCount}?SetIds=${setIds.join(',')}${user ? '&username=' + user.email : ''}`
+    );
   }
 }

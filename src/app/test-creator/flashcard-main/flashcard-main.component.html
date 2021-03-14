@@ -10,23 +10,38 @@
   </mat-button-toggle>
 </mat-button-toggle-group>
 
-<div *ngIf="sets$ | async as sets" class="sets-selector">
-  <mat-button-toggle-group #sets [multiple]="true">
-    <mat-button-toggle *ngFor="let set of sets" [value]="set" (click)="selectSet(set)">
-      {{ set.SetName }}
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-  <div class="buttons">
-    <button mat-icon-button class="filled-button" (click)="clearSelectedSets()">
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button mat-icon-button class="filled-button" (click)="selectAllSets()">
-      <mat-icon>select_all</mat-icon>
-    </button>
+<form [formGroup]="testFormGroup">
+  <div *ngIf="sets$ | async as sets" class="sets-selector">
+    <mat-button-toggle-group #sets [multiple]="true" formControlName="sets">
+      <mat-button-toggle *ngFor="let set of sets" [value]="set">
+        {{ set.SetName }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <div class="buttons">
+      <button mat-icon-button class="filled-button" (click)="clearSelectedSets()">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <button mat-icon-button class="filled-button" (click)="selectAllSets()">
+        <mat-icon>select_all</mat-icon>
+      </button>
+    </div>
   </div>
-</div>
 
-<div class="controls" *ngIf="selectedSets.length > 0">
-  <app-test-options [setIds]="selectedSets"></app-test-options>
-  <button mat-raised-button color="primary" (click)="startTest()">Start Test</button>
+  <div
+    class="controls"
+    *ngIf="
+      testFormGroup.controls['sets'].value && testFormGroup.controls['sets'].value.length !== 0
+    "
+  >
+    <app-test-options
+      [setIds]="testFormGroup.controls['sets'].value"
+      formControlName="testOptions"
+    ></app-test-options>
+    <button mat-raised-button color="primary" (click)="startTest()">Start Test</button>
+  </div>
+</form>
+<div>
+  TEST
+  {{ testFormGroup.controls['testOptions'].value | json }}
+  {{ testFormGroup.controls['sets'].value | json }}
 </div>

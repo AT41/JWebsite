@@ -9,6 +9,9 @@ mat-button-toggle-group {
   > * {
     margin-bottom: 1rem;
   }
+  > form > div {
+    margin-bottom: 1rem;
+  }
 }
 
 mat-button-toggle-group.expanding-description {

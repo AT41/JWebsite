@@ -1,10 +1,19 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef
+} from '@angular/core';
 import { SupersetService } from '../../shared/services/supersetService/superset.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SetService } from '../../shared/services/setService/set.service';
 import { Superset, Set } from '../../../backend/backend-models';
 import { TestStarterService } from 'src/app/flashcard-testing/test-starter.service';
 import { MatButtonToggleGroup } from '@angular/material';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { TestOptions } from '../test-options/test-options.component';
 
 @Component({
   selector: 'app-flashcard-main',
@@ -14,65 +23,58 @@ import { MatButtonToggleGroup } from '@angular/material';
 })
 export class FlashcardMainComponent implements OnInit {
   public supersets$: Observable<Superset[]>;
-  public sets$: Observable<Set[]>;
+  public sets$: BehaviorSubject<Set[]> = new BehaviorSubject(null);
   public get currentSuperset(): Superset {
     return this._currentSuperset;
   }
   public set currentSuperset(superset: Superset) {
-    this.sets$ = this.setService.getSets$(superset.Id);
+    this.setService.getSets$(superset.Id).subscribe((sets) => this.sets$.next(sets));
     this._currentSuperset = superset;
-    this.selectedSets = [];
+    this.clearSelectedSets();
   }
   private _currentSuperset: Superset;
 
-  public selectedSets: Set[] = [];
   public hoveredIndex = -1;
 
-  @ViewChild('sets', { read: MatButtonToggleGroup }) sets: MatButtonToggleGroup;
+  public testFormGroup: FormGroup;
 
   constructor(
     private supersetService: SupersetService,
     private setService: SetService,
-    private testStarter: TestStarterService
-  ) {}
+    private testStarter: TestStarterService,
+    private fb: FormBuilder
+  ) {
+    const testOptions: TestOptions = {
+      yomigana: false,
+      numberOfQuestions: null,
+      includedCards: null
+    };
+    this.testFormGroup = this.fb.group({
+      sets: null,
+      testOptions: testOptions
+    });
+  }
 
   ngOnInit() {
     this.supersets$ = this.supersetService.getSupersets$();
   }
 
-  selectSet(set: Set) {
-    if (this.selectedSets.findIndex((selSet) => selSet.Id === set.Id) === -1) {
-      this.selectedSets = [...this.selectedSets, set];
-    } else {
-      this.selectedSets = this.selectedSets.filter((selSet) => selSet.Id !== set.Id);
-    }
-  }
-
   startTest() {
-    this.testStarter.startTest(this.selectedSets).subscribe();
+    this.testStarter.startTest(this.testFormGroup.controls['sets'].value).subscribe();
   }
 
   clearSelectedSets() {
-    this.sets._buttonToggles.forEach((toggle) => {
-      if (toggle.checked === true) {
-        this.selectSet(toggle.value);
-        toggle.checked = false;
-      }
-    });
+    this.testFormGroup.controls['sets'].setValue([]);
   }
 
   selectAllSets() {
-    this.sets._buttonToggles.forEach((toggle) => {
-      if (toggle.checked === false) {
-        this.selectSet(toggle.value);
-        toggle.checked = true;
-      }
-    });
+    this.testFormGroup.controls['sets'].setValue(this.sets$.value);
   }
 
   showDescription(index: number) {
     this.hoveredIndex = index;
   }
+
   hideDescription() {
     this.hoveredIndex = -1;
   }
