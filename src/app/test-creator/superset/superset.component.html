@@ -8,7 +8,7 @@
 <div
   *ngIf="superset.SupersetDescription"
   class="description"
-  [ngClass]="{ active: selected, inactive: !selected && touched }"
+  [ngClass]="{ active: selected$ | async, inactive: !(selected$ | async) && touched }"
 >
   <mat-divider></mat-divider>
   <div class="description-text">{{ superset.SupersetDescription }}</div>

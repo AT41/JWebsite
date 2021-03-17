@@ -9,7 +9,7 @@
         [class.correct]="locked[index] && isAnswerRight(testerCard.answers, index) | async"
         [class.incorrect]="locked[index] && !(isAnswerRight(testerCard.answers, index) | async)"
       >
-        {{ testerCard.question }}
+        <app-yomigana [yomigana]="testerCard.yomigana" [kanji]="testerCard.question"></app-yomigana>
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>

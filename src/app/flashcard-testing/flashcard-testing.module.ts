@@ -6,13 +6,15 @@ import { QuestionBoxComponent } from './main-tester/question-box/question-box.co
 import { ReactiveFormsModule } from '@angular/forms';
 import { SummaryPageComponent } from './main-tester/summary-page/summary-page.component';
 import { DropdownTabDirective } from './main-tester/question-box/dropdown-tab.directive';
+import { YomiganaComponent } from './main-tester/yomigana/yomigana.component';
 
 @NgModule({
   declarations: [
     MainTesterComponent,
     QuestionBoxComponent,
     SummaryPageComponent,
-    DropdownTabDirective
+    DropdownTabDirective,
+    YomiganaComponent
   ],
   imports: [CommonModule, AngularMatsModule, ReactiveFormsModule],
   exports: []

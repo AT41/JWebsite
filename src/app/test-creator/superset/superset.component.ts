@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { throttleTime } from 'rxjs/operators';
 import { Superset } from '../../../backend/backend-models';
 
 @Component({
@@ -10,13 +12,16 @@ import { Superset } from '../../../backend/backend-models';
 export class SupersetComponent implements OnInit {
   @Input() superset: Superset;
   @Input() set isSelected(selected: boolean) {
-    this.selected = selected;
+    this.selectedEmitter.next(selected);
     if (selected) {
       this.touched = true;
     }
   }
 
-  public selected;
+  private selectedEmitter = new BehaviorSubject<boolean>(false);
+  public selected$ = this.selectedEmitter.pipe(
+    throttleTime(500, undefined, { leading: true, trailing: true })
+  );
   public touched = false;
 
   constructor() {}

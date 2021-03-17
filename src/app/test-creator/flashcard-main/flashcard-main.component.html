@@ -34,14 +34,22 @@
     "
   >
     <app-test-options
-      [setIds]="testFormGroup.controls['sets'].value"
-      formControlName="testOptions"
+      [totalCards]="totalCards$ | async"
+      [formGroup]="testFormGroup.controls['testOptions']"
     ></app-test-options>
-    <button mat-raised-button color="primary" (click)="startTest()">Start Test</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="startTest()"
+      [disabled]="testFormGroup.invalid"
+    >
+      Start Test
+    </button>
   </div>
 </form>
 <div>
   TEST
-  {{ testFormGroup.controls['testOptions'].value | json }}
+  {{ testFormGroup.controls['testOptions'].invalid }}
   {{ testFormGroup.controls['sets'].value | json }}
 </div>

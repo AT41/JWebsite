@@ -1,19 +1,18 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ViewChild,
-  ElementRef,
-  ChangeDetectorRef
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { SupersetService } from '../../shared/services/supersetService/superset.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SetService } from '../../shared/services/setService/set.service';
 import { Superset, Set } from '../../../backend/backend-models';
 import { TestStarterService } from 'src/app/flashcard-testing/test-starter.service';
-import { MatButtonToggleGroup } from '@angular/material';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TestOptions } from '../test-options/test-options.component';
+import { AsyncValidatorFn, FormBuilder, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { CardService } from 'src/app/shared/services/cardService/card.service';
+import { first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+
+export interface TestOptions {
+  yomigana: boolean;
+  numberOfQuestions: number;
+  includedCards: number[];
+}
 
 @Component({
   selector: 'app-flashcard-main',
@@ -38,10 +37,13 @@ export class FlashcardMainComponent implements OnInit {
 
   public testFormGroup: FormGroup;
 
+  public totalCards$: Observable<number>;
+
   constructor(
     private supersetService: SupersetService,
     private setService: SetService,
     private testStarter: TestStarterService,
+    private cardService: CardService,
     private fb: FormBuilder
   ) {
     const testOptions: TestOptions = {
@@ -49,10 +51,28 @@ export class FlashcardMainComponent implements OnInit {
       numberOfQuestions: null,
       includedCards: null
     };
+    const testOptionsFormGroup = this.fb.group(testOptions);
+    const setsFormControl = this.fb.control(null);
     this.testFormGroup = this.fb.group({
-      sets: null,
-      testOptions: testOptions
+      sets: setsFormControl,
+      testOptions: testOptionsFormGroup
     });
+
+    this.totalCards$ = setsFormControl.valueChanges.pipe(
+      switchMap((sets: Set[]) => {
+        return this.cardService.getCardCount$(sets.map((set) => set.Id));
+      }),
+      map((val) => (val ? val[0]['count'] : 0)),
+      tap(() => {
+        setTimeout(() =>
+          testOptionsFormGroup.controls['numberOfQuestions'].setValue(
+            testOptionsFormGroup.controls['numberOfQuestions'].value
+          )
+        );
+      }),
+      shareReplay(1)
+    );
+    this.attachValidators(this.testFormGroup.controls['testOptions'] as FormGroup);
   }
 
   ngOnInit() {
@@ -60,7 +80,12 @@ export class FlashcardMainComponent implements OnInit {
   }
 
   startTest() {
-    this.testStarter.startTest(this.testFormGroup.controls['sets'].value).subscribe();
+    this.testStarter
+      .startTest(
+        this.testFormGroup.controls['sets'].value,
+        this.testFormGroup.controls['testOptions'].value
+      )
+      .subscribe();
   }
 
   clearSelectedSets() {
@@ -77,5 +102,34 @@ export class FlashcardMainComponent implements OnInit {
 
   hideDescription() {
     this.hoveredIndex = -1;
+  }
+
+  private attachValidators(testOptionsFormGroup: FormGroup) {
+    const MAX_CARDS = 60;
+    const numberOfQuestionsValidator: AsyncValidatorFn = (control: FormControl) => {
+      return this.totalCards$.pipe(
+        map((totalCards) => {
+          if (!control.value || !control.value.match(/\D/)) {
+            if (parseInt(control.value) > totalCards) {
+              return { tooMany: 'Please enter numbers lower than the total' };
+            } else if (parseInt(control.value) > MAX_CARDS) {
+              return { tooMany: `Please enter a number below ${MAX_CARDS}` };
+            }
+            return null;
+          } else {
+            return { nonNumbericValue: 'Numbers only please' };
+          }
+        }),
+        first()
+      );
+    };
+
+    Object.keys(testOptionsFormGroup.controls).forEach((key) => {
+      switch (key) {
+        case 'numberOfQuestions':
+          testOptionsFormGroup.controls[key].setAsyncValidators(numberOfQuestionsValidator);
+          break;
+      }
+    });
   }
 }

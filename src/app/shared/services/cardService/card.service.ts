@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Card } from '../../../../backend/backend-models';
 import { environment } from 'src/environments/environment';
 import { FirebaseAuthService } from '../firebase-auth-service/firebase-auth.service';
-import { tap } from 'rxjs/operators';
+import { TestOptions } from 'src/app/test-creator/flashcard-main/flashcard-main.component';
 
 @Injectable({
   providedIn: 'root'
@@ -28,17 +28,22 @@ export class CardService {
     );
   }
 
-  public getCards$(setId: number): Observable<Card[]> {
+  public getCards$(setIds: number[], testOptions?: TestOptions): Observable<Card[]> {
     const user = this.firebaseAuthService.user$.value;
+    const backendTestOptions = testOptions
+      ? Object.keys(testOptions).map((key) => `${key}=${testOptions[key]}`)
+      : null;
     return this.backendService.httpRequest(
-      `${this.urlCards}?SetId=${setId}${user ? '&username=' + user.email : ''}`
+      `${this.urlCards}?setIds=${setIds.sort((a, b) => a - b).join(',')}${
+        user ? '&username=' + user.email : ''
+      }${testOptions ? '&' + backendTestOptions.join('&') : ''}`
     );
   }
 
   public getCardCount$(setIds: number[]): Observable<number> {
     const user = this.firebaseAuthService.user$.value;
     return this.backendService.httpRequest(
-      `${this.urlCardCount}?SetIds=${setIds.join(',')}${user ? '&username=' + user.email : ''}`
+      `${this.urlCardCount}?setIds=${setIds.join(',')}${user ? '&username=' + user.email : ''}`
     );
   }
 }
