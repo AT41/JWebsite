@@ -1,8 +1,11 @@
-<div class="yomigana">
-  <span *ngFor="let yomiganaChunk of yomigana">
-    {{ yomiganaChunk.characters }}
+<div class="yomigana" *ngIf="yomigana">
+  <span
+    *ngFor="let yomiganaDisplayChunk of yomiganaDisplay; index as i"
+    [ngStyle]="yomiganaDisplayChunk.ngStyle"
+  >
+    {{ yomiganaDisplayChunk.yomigana }}
   </span>
 </div>
 <div class="kanji">
-  {{ kanji }}
+  {{ kanjiString }}
 </div>

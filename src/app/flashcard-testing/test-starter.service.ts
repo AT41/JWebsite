@@ -94,21 +94,26 @@ export class TestStarterService {
 
   private calculateYomigana(furigana: string, kanji: string): Yomigana[] {
     var yomigana: Yomigana[] = [];
-    var kanjiIndex = 0;
-    for (var i = 0; i < furigana.length; i++) {
-      while (furigana[i] === kanji[kanjiIndex] && i < furigana.length) {
-        kanji = kanji.slice(1);
-        kanjiIndex++;
+    var furiganaIndexStart = 0;
+    for (var i = 0; i < kanji.length; i++) {
+      while (kanji[i] === furigana[furiganaIndexStart] && i < kanji.length) {
         i++;
+        furiganaIndexStart++;
       }
-      var startIndex = i;
-      while (kanji.indexOf(furigana[i]) === -1 && i < furigana.length) {
-        i++;
-      }
-      if (startIndex < i) {
-        yomigana.push({ kanjiIndex: kanjiIndex, characters: furigana.slice(startIndex, i) });
-        kanjiIndex += kanji.indexOf(furigana[i]) + 1;
-        kanji = kanji.slice(kanji.indexOf(furigana[i]) + 1);
+      if (i < kanji.length) {
+        const kanjiIndexStart = i;
+        while (i < kanji.length && furigana.indexOf(kanji[i], furiganaIndexStart) === -1) {
+          i++;
+        }
+        const furiganaIndexEnd =
+          i === kanji.length ? furigana.length : furigana.indexOf(kanji[i], furiganaIndexStart);
+        const kanjiIndexEnd = i;
+        yomigana.push({
+          kanjiIndexEnd: kanjiIndexEnd,
+          kanjiIndexStart: kanjiIndexStart,
+          characters: furigana.slice(furiganaIndexStart, furiganaIndexEnd)
+        });
+        furiganaIndexStart = furiganaIndexEnd + 1;
       }
     }
     return yomigana;

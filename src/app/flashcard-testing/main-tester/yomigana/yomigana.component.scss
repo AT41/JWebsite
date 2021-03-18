@@ -1,6 +1,9 @@
 .yomigana {
-  font-size: 0.8rem;
   line-height: initial;
+  > span {
+    font-size: 0.8rem;
+    display: inline-block;
+  }
 }
 
 .kanji {
@@ -12,3 +15,5 @@
   margin: 36px 0;
   display: block;
 }
+
+// Yomigana dynamic css properties are set in .ts
