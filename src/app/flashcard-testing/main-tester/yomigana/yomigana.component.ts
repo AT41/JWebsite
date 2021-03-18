@@ -19,19 +19,19 @@ class KanjiYomiganaDisplay {
 })
 export class YomiganaComponent implements OnInit {
   @Input() set kanji(kanji: string) {
-    this.yomiganaDisplay = Array(kanji.length).map((val) => {
-      return { yomigana: '', ngStyle: { 'min-width': '0' } };
-    });
+    this.yomiganaDisplay = Array(kanji.length)
+      .fill({})
+      .map((_) => {
+        return { yomigana: '', ngStyle: { 'min-width': '0' } };
+      });
     this.kanjiString = kanji;
     this.initializeYomiganaSpacing();
   }
   @Input() yomigana?: Yomigana[];
 
   public yomiganaDisplay: KanjiYomiganaDisplay[];
-  //public ngStyles: any[];
 
   public kanjiString: string;
-  //public yomiganaArray: string[];
   constructor() {}
 
   ngOnInit(): void {}
@@ -39,16 +39,16 @@ export class YomiganaComponent implements OnInit {
   private initializeYomiganaSpacing() {
     var previousKanjiIndex = 0,
       currentKanjiIndex = 0;
-    this.yomigana?.forEach((yomiganaChunk, index) => {
+    this.yomigana?.forEach((yomiganaChunk) => {
       for (var i = 0; i < yomiganaChunk.kanjiIndexStart - previousKanjiIndex; i++) {
         this.yomiganaDisplay[currentKanjiIndex++] = {
-          ngStyle: { 'min-width': '2rem' },
+          ngStyle: { 'min-width': '2em' },
           yomigana: ''
         };
       }
       this.yomiganaDisplay[currentKanjiIndex++] = {
         ngStyle: {
-          'min-width': `${(yomiganaChunk.kanjiIndexEnd - yomiganaChunk.kanjiIndexStart) * 2}rem`
+          'min-width': `${(yomiganaChunk.kanjiIndexEnd - yomiganaChunk.kanjiIndexStart) * 2}em`
         },
         yomigana: yomiganaChunk.characters
       };

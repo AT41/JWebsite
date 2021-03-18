@@ -7,17 +7,15 @@
   <mat-card-content>
     <div class="questionsPreview"></div>
     <form [formGroup]="formGroup">
-      <div>
-        <mat-checkbox formControlName="yomigana">
-          <mat-label>Show Hiragana Over Kanji</mat-label>
-        </mat-checkbox>
-        <mat-form-field appearance="outline">
-          <mat-label>Number of Questions</mat-label>
-          <input matInput formControlName="numberOfQuestions" />
-          <div>of {{ totalCards }}</div>
-          <mat-error>{{ getError() }}</mat-error>
-        </mat-form-field>
-      </div>
+      <mat-checkbox formControlName="yomigana">
+        <mat-label>Show Hiragana Over Kanji</mat-label>
+      </mat-checkbox>
+      <mat-form-field appearance="outline">
+        <mat-label>Number of Questions</mat-label>
+        <input matInput formControlName="numberOfQuestions" />
+        <div>of {{ totalCards }}</div>
+        <mat-error>{{ getError() }}</mat-error>
+      </mat-form-field>
     </form>
   </mat-card-content>
 </mat-card>

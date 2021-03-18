@@ -109,7 +109,9 @@ export class FlashcardMainComponent implements OnInit {
     const numberOfQuestionsValidator: AsyncValidatorFn = (control: FormControl) => {
       return this.totalCards$.pipe(
         map((totalCards) => {
-          if (!control.value || !control.value.match(/\D/)) {
+          if (!control.value) {
+            return { pleaseEnter: 'Please enter a number' };
+          } else if (!control.value.match(/\D/)) {
             if (parseInt(control.value) > totalCards) {
               return { tooMany: 'Please enter numbers lower than the total' };
             } else if (parseInt(control.value) > MAX_CARDS) {

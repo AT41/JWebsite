@@ -1,4 +1,4 @@
-<div class="yomigana" *ngIf="yomigana">
+<div class="yomigana" *ngIf="!!yomigana && yomigana.length > 0">
   <span
     *ngFor="let yomiganaDisplayChunk of yomiganaDisplay; index as i"
     [ngStyle]="yomiganaDisplayChunk.ngStyle"

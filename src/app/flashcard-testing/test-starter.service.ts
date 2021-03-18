@@ -102,11 +102,16 @@ export class TestStarterService {
       }
       if (i < kanji.length) {
         const kanjiIndexStart = i;
-        while (i < kanji.length && furigana.indexOf(kanji[i], furiganaIndexStart) === -1) {
+        while (
+          i < kanji.length &&
+          furigana.indexOf(kanji[i], furiganaIndexStart + (i - kanjiIndexStart)) === -1
+        ) {
           i++;
         }
         const furiganaIndexEnd =
-          i === kanji.length ? furigana.length : furigana.indexOf(kanji[i], furiganaIndexStart);
+          i === kanji.length
+            ? furigana.length
+            : furigana.indexOf(kanji[i], furiganaIndexStart + (i - kanjiIndexStart));
         const kanjiIndexEnd = i;
         yomigana.push({
           kanjiIndexEnd: kanjiIndexEnd,

@@ -1,13 +1,15 @@
 .yomigana {
   line-height: initial;
+  display: flex;
   > span {
-    font-size: 0.8rem;
+    font-size: 0.8em;
     display: inline-block;
+    text-align: center;
   }
 }
 
 .kanji {
-  font-size: 2rem;
+  font-size: 2em;
   line-height: initial;
 }
 
