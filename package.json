@@ -41,7 +41,7 @@
     "hammerjs": "^2.0.8",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.21",
     "morgan": "~1.9.1",
     "mysql2": "^2.2.5",
     "node-gyp": "^5.0.7",
